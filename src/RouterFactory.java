@@ -8,7 +8,7 @@ import java.util.Scanner;
  */
 public class RouterFactory {
 
-    public static Router makeRouter(String filename){
+    public static Router makeRouter(String filename, boolean poison){
         Scanner in = null;
         try {
             in = new Scanner(new File(filename));
@@ -33,7 +33,7 @@ public class RouterFactory {
                 SocketAddress neighborAddress = new SocketAddress(neighborIp, neighborPort);
                 neighborsMap.put(neighborAddress, weight);
             }
-            return new Router(routerAddress, neighborsMap);
+            return new Router(routerAddress, neighborsMap, poison);
         } catch (Exception e){
             System.out.println("Error parsing input file " + filename);
             System.exit(1);
