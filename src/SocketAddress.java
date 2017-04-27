@@ -23,6 +23,25 @@ public class SocketAddress implements Comparable<SocketAddress> {
         }
     }
 
+    @Override
+    public boolean equals(Object other){
+        if(other == null)
+            return false;
+        if(other == this)
+            return true;
+        try{
+            SocketAddress otherAddress = (SocketAddress)other;
+            return this.compareTo(otherAddress) == 0;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode(){
+        return ip.hashCode() + port;
+    }
+
     public String getIp() {
         return ip;
     }

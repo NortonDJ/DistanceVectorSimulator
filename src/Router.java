@@ -37,7 +37,7 @@ public class Router {
         return this.address.getPort();
     }
 
-    public boolean isNeighbor(SocketAddress address){
+    public boolean hasNeighbor(SocketAddress address){
         return neighborsMap.containsKey(address);
     }
 
