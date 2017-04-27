@@ -135,6 +135,10 @@ public class Router {
             // Add the minimum distance from this node to the destination to DV,
             // Add the knowledge of node->(neighbor if exist)->dest
             newVec.addValue(destination, minimum);
+            // if the destination is reachable, add it to the path
+            if(minimum != Integer.MAX_VALUE){
+                path.add(destination);
+            }
             pathMap.put(destination, path);
         }
         return new DistanceVectorCalculation(newVec, pathMap);
@@ -151,15 +155,26 @@ public class Router {
     public void broadCastDistanceVector(DistanceVectorCalculation calculation) {
         HashMap<SocketAddress, ArrayList<SocketAddress>> nextHops = calculation.getPathMap();
         for (SocketAddress neighbor : neighborsMap.keySet()) {
-            DistanceVector individualizedVec = calculation.getResultVector();
-            HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap = calculation.getPathMap();
-            ArrayList<SocketAddress> path = pathMap.getOrDefault(neighbor, new ArrayList<>());
-
-            if (poison) {
-                individualizedVec.applyPoison(neighbor, path);
-            }
-            sendDistanceVector(neighbor, individualizedVec);
+            DistanceVector toSend = prepareDistanceVectorToSend(neighbor, calculation);
+            sendDistanceVector(neighbor, toSend);
         }
+    }
+
+    /**
+     * This is a subroutine for broadcasting distance vectors. This method will
+     * create a copy of the distance vector from the calculation, and apply poison
+     * if necessary.
+     * @param destination the destination to send the distance vector to
+     * @param calculation the calculation object containing the DV and paths
+     * @return the distance vector, with poison if necessary
+     */
+    public DistanceVector prepareDistanceVectorToSend(SocketAddress destination, DistanceVectorCalculation calculation){
+        DistanceVector individualizedVec = new DistanceVector(calculation.getResultVector());
+        if(poison){
+            HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap = calculation.getPathMap();
+            individualizedVec.applyPoison(destination, pathMap);
+        }
+        return individualizedVec;
     }
 
     public void updateForwardingTable(DistanceVectorCalculation calculation) {
