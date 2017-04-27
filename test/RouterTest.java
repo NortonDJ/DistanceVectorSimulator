@@ -35,7 +35,6 @@ public class RouterTest {
         DistanceVector resultVec = result.getResultVector();
         HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap = result.getPathMap();
         Assert.assertEquals(new Integer(0), resultVec.getValue(source));
-
     }
 
 }
