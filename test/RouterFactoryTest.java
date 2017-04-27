@@ -8,14 +8,14 @@ import org.junit.Test;
 public class RouterFactoryTest {
     @Test
     public void makeRouterAssignsRouterCorrectAddress() throws Exception {
-        Router r = RouterFactory.makeRouter("resources/neighbors1.txt");
+        Router r = RouterFactory.makeRouter("resources/neighbors1.txt", false);
         Assert.assertEquals("127.0.0.1", r.getIP());
         Assert.assertEquals(new Integer(9876), r.getPort());
     }
 
     @Test
     public void makeRouterAssignsCorrectNeighbors() throws Exception {
-        Router r = RouterFactory.makeRouter("resources/neighbors1.txt");
+        Router r = RouterFactory.makeRouter("resources/neighbors1.txt", false);
         SocketAddress n1 = new SocketAddress("127.0.0.1", 9877);
         SocketAddress n2 = new SocketAddress("127.0.0.1", 9878);
         SocketAddress n3 = new SocketAddress("127.0.0.1", 9879);
