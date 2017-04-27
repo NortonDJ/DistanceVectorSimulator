@@ -10,6 +10,7 @@ public class Router {
     private SocketAddress address;
     private HashMap<SocketAddress, Integer> neighborsMap;
     private HashMap<SocketAddress, DistanceVector> vectorMap;
+    private boolean poison;
 
     public static void main(String[] args){
 
@@ -22,23 +23,41 @@ public class Router {
         this.vectorMap = new HashMap<>();
     }
 
-    public Router(SocketAddress address, HashMap<SocketAddress, Integer> neighborsMap) {
+    public Router(SocketAddress address, HashMap<SocketAddress, Integer> neighborsMap, boolean poison) {
         this.address = address;
         this.table = new ForwardingTable();
         this.neighborsMap = neighborsMap;
+        this.poison = poison;
     }
 
-    public void receiveDistanceVector(DistanceVector vector, boolean poison){
+    /**
+     * Receives a distance vector update, saves it in the distance vector table,
+     * Calculates the new distance vector, and if the new vector is different
+     * from the old one, the router updates the forwarding table and broadcasts
+     * the new distance vector to its neighbors
+     * @param vector the new distance vector
+     */
+    public void receiveDistanceVector(DistanceVector vector){
         this.vectorMap.put(vector.getSource(), vector);
+
         DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
         this.mostRecentCalculation = recalculateDistanceVector();
         // if a change has occurred
         if(!mostRecentCalculation.equals(oldCalculation)){
             updateForwardingTable(mostRecentCalculation);
-            broadCastDistanceVector(mostRecentCalculation, poison);
+            broadCastDistanceVector(mostRecentCalculation);
         }
     }
 
+    /**
+     * Recalculates the distance vector and paths to other nodes based on the
+     * current distance vector map. The new distance vector is calculated as
+     * @<code>for all nodes the router knows about,
+     *     dsrc->node = min over all i{dsrc->neighbor(i) + dneighbor(i)->node}
+     * @</code>
+     * @return the wrapper class for the DistanceVector and the Mapping of paths
+     * for each destinations
+     */
     public DistanceVectorCalculation recalculateDistanceVector(){
         DistanceVector newVec = new DistanceVector(this.address);
         HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap = new HashMap<>();
@@ -98,7 +117,14 @@ public class Router {
         return new DistanceVectorCalculation(newVec, pathMap);
     }
 
-    public void broadCastDistanceVector(DistanceVectorCalculation calculation, boolean poison){
+    /**
+     * Broadcasts the given DistanceVectorCalculation to all neighbors.
+     * If the router is set to poison, then it will do so here by copying the
+     * distance vector from the calculation and applying the poison on an individual
+     * basis per neighbor.
+     * @param calculation
+     */
+    public void broadCastDistanceVector(DistanceVectorCalculation calculation){
         HashMap<SocketAddress, ArrayList<SocketAddress>> nextHops = calculation.getPathMap();
         for(SocketAddress neighbor : neighborsMap.keySet()){
             DistanceVector individualizedVec = calculation.getResultVector();
@@ -135,4 +161,5 @@ public class Router {
     public int getWeight(SocketAddress address){
         return neighborsMap.getOrDefault(address, -1);
     }
+
 }
