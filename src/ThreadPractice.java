@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by nortondj on 4/26/17.
@@ -11,18 +13,18 @@ public class ThreadPractice {
         this.typed = new ArrayList<>();
     }
     public static void main(String[] args) {
+        System.out.println("Processors available: " + Runtime.getRuntime().availableProcessors());
         ThreadPractice tp = new ThreadPractice();
-        tp.start();
+        tp.simulate();
     }
 
-    public void start(){
-        Thread updateThread = new Thread(new UpdateThread(this));
-        Thread listenThread = new Thread(new ListenThread());
-        Thread commandThread = new Thread(new CommandThread(this));
+    public void simulate(){
+        // create a pool of max size 4, we expect 3 threads to be made, plus the current thread
+        ScheduledThreadPoolExecutor threadPool = new ScheduledThreadPoolExecutor(4);
 
-        updateThread.start();
-        listenThread.start();
-        commandThread.start();
+        threadPool.scheduleAtFixedRate(new UpdateThread(this), 0, 100, TimeUnit.SECONDS);
+        threadPool.scheduleAtFixedRate(new ListenThread(), 0, 100, TimeUnit.SECONDS);
+        threadPool.scheduleAtFixedRate(new CommandThread(this), 0, 100, TimeUnit.SECONDS);
     }
 
     public void showLines(){
