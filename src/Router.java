@@ -72,6 +72,14 @@ public class Router {
     public DistanceVectorCalculation recalculateDistanceVector() {
         DistanceVector newVec = new DistanceVector(this.address);
         HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap = new HashMap<>();
+
+        // ADD dsource->source = 0, through itself
+        ArrayList<SocketAddress> sourcePath = new ArrayList<>();
+        sourcePath.add(address);
+        newVec.addValue(address, 0);
+        pathMap.put(address, sourcePath);
+
+        // calculate rest of vectors
         for (SocketAddress destination : vectorMap.keySet()) {
 
             Integer minimum = Integer.MAX_VALUE;
