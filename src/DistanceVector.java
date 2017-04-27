@@ -13,6 +13,11 @@ public class DistanceVector {
         this.valuesMap = new HashMap<>();
     }
 
+    public DistanceVector(DistanceVector other){
+        this.source = other.source;
+        this.valuesMap = new HashMap<>(other.valuesMap);
+    }
+
     public SocketAddress getSource(){
         return source;
     }
@@ -25,11 +30,15 @@ public class DistanceVector {
         return this.valuesMap.getOrDefault(address, Integer.MAX_VALUE);
     }
 
-    public void applyPoison(SocketAddress destination, ArrayList<SocketAddress> path){
-        if(path.isEmpty()){
+    public void applyPoison(SocketAddress destination, HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap){
+        if(pathMap.isEmpty()){
             return;
         }
         for(SocketAddress s : valuesMap.keySet()){
+            ArrayList<SocketAddress> path = pathMap.getOrDefault(s, new ArrayList<>());
+            if(path.isEmpty()){
+                continue;
+            }
             //if the path contains the destination, then poison it
             if(path.contains(destination)){
                 valuesMap.put(s, Integer.MAX_VALUE);
