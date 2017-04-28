@@ -13,6 +13,7 @@ public class Router {
     private HashMap<SocketAddress, DistanceVector> vectorMap;
     private HashSet<SocketAddress> knownNodes;
     private boolean poison;
+
     public static void main(String[] args) {
 
     }

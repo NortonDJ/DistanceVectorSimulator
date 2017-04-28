@@ -42,6 +42,11 @@ public class SocketAddress implements Comparable<SocketAddress> {
         return ip.hashCode() + port;
     }
 
+    @Override
+    public String toString(){
+        return ip + ":" + port;
+    }
+
     public String getIp() {
         return ip;
     }
