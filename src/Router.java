@@ -11,7 +11,6 @@ public class Router {
     private HashMap<SocketAddress, Integer> neighborsMap;
     private HashMap<SocketAddress, DistanceVector> vectorMap;
     private boolean poison;
-
     public static void main(String[] args) {
 
     }
@@ -22,6 +21,7 @@ public class Router {
         this.neighborsMap = new HashMap<>();
         this.vectorMap = new HashMap<>();
         addNeighborsToDistVectMap();
+        this.mostRecentCalculation = recalculateDistanceVector();
     }
 
     public Router(SocketAddress address, HashMap<SocketAddress, Integer> neighborsMap, boolean poison) {
@@ -31,6 +31,7 @@ public class Router {
         this.vectorMap = new HashMap<>();
         this.poison = poison;
         addNeighborsToDistVectMap();
+        this.mostRecentCalculation = recalculateDistanceVector();
     }
 
     private void addNeighborsToDistVectMap() {
@@ -62,12 +63,12 @@ public class Router {
     /**
      * Recalculates the distance vector and paths to other nodes based on the
      * current distance vector map. The new distance vector is calculated as
-     *
+     * {@code
+     * for all nodes the router knows about,
+     *      dsrc->node = min over all i{dsrc->neighbor(i) + dneighbor(i)->node}
+     * }
      * @return the wrapper class for the DistanceVector and the Mapping of paths
-     * for each destinations
-     * @<code>for all nodes the router knows about,
-     * dsrc->node = min over all i{dsrc->neighbor(i) + dneighbor(i)->node}
-     * @</code>
+     * for each destination
      */
     public DistanceVectorCalculation recalculateDistanceVector() {
         DistanceVector newVec = new DistanceVector(this.address);
@@ -94,7 +95,6 @@ public class Router {
                 //calculate distance = dsrc->neighbor + dneighbor->node
 
                 Integer distanceToNeighbor = neighborsMap.get(neighbor);
-                Integer distanceNeighborToNode;
 
                 DistanceVector neighborDistanceVector = vectorMap.getOrDefault(neighbor, null);
 
@@ -103,25 +103,13 @@ public class Router {
                 //         if same, then dneighbor->dest = dneighbor->neighbor = 0;
                 //         otherwise dneighbor->dest = inf, because router doesn't have path
 
-                if (neighborDistanceVector == null) {
-                    if (neighbor.equals(destination)) {
-                        // destination and neighbor are the same
-                        distanceNeighborToNode = 0;
-                    } else {
-                        // destination and neighbor are different and
-                        // no direct path from neighbor->dest
-                        distanceNeighborToNode = Integer.MAX_VALUE;
-                    }
-                } else {
-                    // we know dneighbor->dest
-                    distanceNeighborToNode = neighborDistanceVector.getValue(destination);
-                }
+                Integer distanceNeighborToDest = findDistance(neighbor, destination, neighborDistanceVector);
 
                 Integer calculation;
-                if (distanceToNeighbor == Integer.MAX_VALUE || distanceNeighborToNode == Integer.MAX_VALUE) {
+                if (distanceToNeighbor == Integer.MAX_VALUE || distanceNeighborToDest == Integer.MAX_VALUE) {
                     calculation = Integer.MAX_VALUE;
                 } else {
-                    calculation = distanceToNeighbor + distanceNeighborToNode;
+                    calculation = distanceToNeighbor + distanceNeighborToDest;
                 }
 
                 if (calculation < minimum) {
@@ -158,6 +146,32 @@ public class Router {
             DistanceVector toSend = prepareDistanceVectorToSend(neighbor, calculation);
             sendDistanceVector(neighbor, toSend);
         }
+    }
+
+    public Integer findDistance(SocketAddress node, SocketAddress destination, DistanceVector nodeDistanceVector){
+        // if the neighbor has not sent a distance vector,
+        //     we check if the neighbor and destination are the same
+        //         if same, then dneighbor->dest = dneighbor->neighbor = 0;
+        //         otherwise dneighbor->dest = inf, because router doesn't have path
+        Integer distanceNodeToDest;
+        if (nodeDistanceVector == null) {
+            if (node.equals(destination)) {
+                // destination and neighbor are the same
+                distanceNodeToDest = 0;
+            } else {
+                // destination and neighbor are different and
+                // no direct path from neighbor->dest
+                distanceNodeToDest = Integer.MAX_VALUE;
+            }
+        } else {
+            // we know dneighbor->dest
+            if(node.equals(destination)){
+                distanceNodeToDest = 0;
+            } else {
+                distanceNodeToDest = nodeDistanceVector.getValue(destination);
+            }
+        }
+        return  distanceNodeToDest;
     }
 
     /**
@@ -199,6 +213,10 @@ public class Router {
 
     public int getWeight(SocketAddress address) {
         return neighborsMap.getOrDefault(address, -1);
+    }
+
+    public DistanceVectorCalculation getMostRecentCalculation() {
+        return mostRecentCalculation;
     }
 
 }
