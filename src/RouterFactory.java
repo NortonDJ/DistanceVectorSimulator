@@ -15,6 +15,7 @@ public class RouterFactory {
         } catch (FileNotFoundException e) {
             System.out.println("File " + filename + " not found...");
             System.out.println("Current Directory: " + System.getProperty("user.dir"));
+            in.close();
             System.exit(1);
         }
         try {
@@ -33,9 +34,11 @@ public class RouterFactory {
                 SocketAddress neighborAddress = new SocketAddress(neighborIp, neighborPort);
                 neighborsMap.put(neighborAddress, weight);
             }
+            in.close();
             return new Router(routerAddress, neighborsMap, poison);
         } catch (Exception e){
             System.out.println("Error parsing input file " + filename);
+            in.close();
             System.exit(1);
             return null;
         }
