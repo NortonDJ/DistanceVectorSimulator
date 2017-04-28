@@ -59,8 +59,9 @@ public class Router {
      * the new distance vector to its neighbors
      *
      * @param vector the new distance vector
+     * @return true if the vector caused a broadcast
      */
-    public void receiveDistanceVector(DistanceVector vector) {
+    public boolean receiveDistanceVector(DistanceVector vector) {
         this.vectorMap.put(vector.getSource(), vector);
         for(SocketAddress s : vector.getNodes()){
             this.knownNodes.add(s);
@@ -72,6 +73,9 @@ public class Router {
         if (!mostRecentCalculation.equals(oldCalculation)) {
             updateForwardingTable(mostRecentCalculation);
             broadCastDistanceVector(mostRecentCalculation);
+            return true;
+        } else {
+            return false;
         }
     }
 

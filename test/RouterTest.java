@@ -144,4 +144,42 @@ public class RouterTest {
         Assert.assertEquals(9, r.getDistanceVectorWeight(n4));
     }
 
+    @Test
+    public void receiveDistanceVectorCausesBroadCast(){
+        Router r = RouterFactory.makeRouter("resources/test2.txt", false);
+        r.recalculateDistanceVector();
+        SocketAddress source = new SocketAddress("127.0.0.1", 9876);
+        SocketAddress n1 = new SocketAddress("127.0.0.1", 9877);
+        SocketAddress n2 = new SocketAddress("127.0.0.1", 9878);
+        SocketAddress n3 = new SocketAddress("127.0.0.1", 9879);
+
+        //from test2.txt, source -> n1,n2,n3 = (2,7,20)
+        //create a vector from n1, that has n1 -> n3 = 7
+        //will cause source -> n1,n2,n3 = (2, 7, 9)
+
+        DistanceVector n1vector = new DistanceVector(n1);
+        n1vector.addValue(n3,7);
+
+        Assert.assertTrue(r.receiveDistanceVector(n1vector));
+    }
+
+    @Test
+    public void receiveDistanceVectorNotCausesBroadCast(){
+        Router r = RouterFactory.makeRouter("resources/test2.txt", false);
+        r.recalculateDistanceVector();
+        SocketAddress source = new SocketAddress("127.0.0.1", 9876);
+        SocketAddress n1 = new SocketAddress("127.0.0.1", 9877);
+        SocketAddress n2 = new SocketAddress("127.0.0.1", 9878);
+        SocketAddress n3 = new SocketAddress("127.0.0.1", 9879);
+
+        //from test2.txt, source -> n1,n2,n3 = (2,7,20)
+        //create a vector from n1, that has n1 -> n3 = 7
+        //will cause source -> n1,n2,n3 = (2, 7, 9)
+
+        DistanceVector n1vector = new DistanceVector(n1);
+        n1vector.addValue(n3,10000);
+
+        Assert.assertFalse(r.receiveDistanceVector(n1vector));
+    }
+
 }

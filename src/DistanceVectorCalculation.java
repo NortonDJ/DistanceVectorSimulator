@@ -22,4 +22,17 @@ public class DistanceVectorCalculation {
         return pathMap;
     }
 
+    public boolean equals(Object other){
+        if(other == null)
+            return false;
+        if(other == this)
+            return true;
+        try{
+            DistanceVectorCalculation otherDVC = (DistanceVectorCalculation) other;
+            return this.resultVector.equals(otherDVC.resultVector);
+        } catch (Exception e){
+            return false;
+        }
+    }
+
 }

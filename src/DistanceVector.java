@@ -51,4 +51,18 @@ public class DistanceVector {
     public Set<SocketAddress> getNodes(){
         return this.valuesMap.keySet();
     }
+
+    public boolean equals(Object o){
+        if(o == null)
+            return false;
+        if(o == this)
+            return true;
+        try{
+            DistanceVector other = (DistanceVector) o;
+            return this.source.equals(other.source) && this.valuesMap.equals(other.valuesMap);
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
