@@ -52,6 +52,7 @@ public class DistanceVector {
         return this.valuesMap.keySet();
     }
 
+    @Override
     public boolean equals(Object o){
         if(o == null)
             return false;

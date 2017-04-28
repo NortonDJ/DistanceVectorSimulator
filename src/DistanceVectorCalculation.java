@@ -22,6 +22,7 @@ public class DistanceVectorCalculation {
         return pathMap;
     }
 
+    @Override
     public boolean equals(Object other){
         if(other == null)
             return false;
