@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created by nortondj on 4/26/17.
@@ -10,6 +11,7 @@ public class Router {
     private SocketAddress address;
     private HashMap<SocketAddress, Integer> neighborsMap;
     private HashMap<SocketAddress, DistanceVector> vectorMap;
+    private HashSet<SocketAddress> knownNodes;
     private boolean poison;
     public static void main(String[] args) {
 
@@ -20,7 +22,9 @@ public class Router {
         this.table = new ForwardingTable();
         this.neighborsMap = new HashMap<>();
         this.vectorMap = new HashMap<>();
+        this.knownNodes = new HashSet<>();
         addNeighborsToDistVectMap();
+        addNeighborsToKnownNodes();
         this.mostRecentCalculation = recalculateDistanceVector();
     }
 
@@ -29,14 +33,22 @@ public class Router {
         this.table = new ForwardingTable();
         this.neighborsMap = neighborsMap;
         this.vectorMap = new HashMap<>();
+        this.knownNodes = new HashSet<>();
         this.poison = poison;
         addNeighborsToDistVectMap();
+        addNeighborsToKnownNodes();
         this.mostRecentCalculation = recalculateDistanceVector();
     }
 
     private void addNeighborsToDistVectMap() {
         for (SocketAddress neighbor : neighborsMap.keySet()) {
             this.vectorMap.put(neighbor, null);
+        }
+    }
+
+    private void addNeighborsToKnownNodes(){
+        for(SocketAddress neighbor : neighborsMap.keySet()){
+            this.knownNodes.add(neighbor);
         }
     }
 
@@ -50,6 +62,9 @@ public class Router {
      */
     public void receiveDistanceVector(DistanceVector vector) {
         this.vectorMap.put(vector.getSource(), vector);
+        for(SocketAddress s : vector.getNodes()){
+            this.knownNodes.add(s);
+        }
 
         DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
         this.mostRecentCalculation = recalculateDistanceVector();
@@ -80,8 +95,7 @@ public class Router {
         newVec.addValue(address, 0);
         pathMap.put(address, sourcePath);
 
-        // calculate rest of vectors
-        for (SocketAddress destination : vectorMap.keySet()) {
+        for (SocketAddress destination : knownNodes) {
 
             Integer minimum = Integer.MAX_VALUE;
             ArrayList<SocketAddress> path = new ArrayList<>();
@@ -97,12 +111,6 @@ public class Router {
                 Integer distanceToNeighbor = neighborsMap.get(neighbor);
 
                 DistanceVector neighborDistanceVector = vectorMap.getOrDefault(neighbor, null);
-
-                // if the neighbor has not sent a distance vector,
-                //     we check if the neighbor and destination are the same
-                //         if same, then dneighbor->dest = dneighbor->neighbor = 0;
-                //         otherwise dneighbor->dest = inf, because router doesn't have path
-
                 Integer distanceNeighborToDest = findDistance(neighbor, destination, neighborDistanceVector);
 
                 Integer calculation;
@@ -121,10 +129,10 @@ public class Router {
             }
 
             // Add the minimum distance from this node to the destination to DV,
-            // Add the knowledge of node->(neighbor if exist)->dest
             newVec.addValue(destination, minimum);
             // if the destination is reachable, add it to the path
             if(minimum != Integer.MAX_VALUE){
+                // Add the knowledge of node->(destination if exist)->dest
                 path.add(destination);
             }
             pathMap.put(destination, path);
@@ -211,8 +219,12 @@ public class Router {
         return neighborsMap.containsKey(address);
     }
 
-    public int getWeight(SocketAddress address) {
+    public int getNeighborWeight(SocketAddress address) {
         return neighborsMap.getOrDefault(address, -1);
+    }
+
+    public int getDistanceVectorWeight(SocketAddress address){
+        return this.mostRecentCalculation.getResultVector().getValue(address);
     }
 
     public DistanceVectorCalculation getMostRecentCalculation() {

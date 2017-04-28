@@ -1,5 +1,7 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created by nortondj on 4/26/17.
@@ -44,5 +46,9 @@ public class DistanceVector {
                 valuesMap.put(s, Integer.MAX_VALUE);
             }
         }
+    }
+
+    public Set<SocketAddress> getNodes(){
+        return this.valuesMap.keySet();
     }
 }
