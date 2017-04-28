@@ -23,9 +23,9 @@ public class RouterFactoryTest {
         Assert.assertTrue(r.hasNeighbor(n1));
         Assert.assertTrue(r.hasNeighbor(n2));
         Assert.assertTrue(r.hasNeighbor(n3));
-        Assert.assertEquals(1, r.getWeight(n1));
-        Assert.assertEquals(1, r.getWeight(n2));
-        Assert.assertEquals(1, r.getWeight(n3));
+        Assert.assertEquals(1, r.getNeighborWeight(n1));
+        Assert.assertEquals(1, r.getNeighborWeight(n2));
+        Assert.assertEquals(1, r.getNeighborWeight(n3));
     }
 
 }
