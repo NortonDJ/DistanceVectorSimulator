@@ -66,4 +66,12 @@ public class DistanceVector {
             return false;
         }
     }
+
+    public String toString(){
+        String result = "";
+        for(SocketAddress s : valuesMap.keySet()){
+            result += s + " | " + valuesMap.get(s) + "\n";
+        }
+        return result;
+    }
 }
