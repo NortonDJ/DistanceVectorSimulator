@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -45,7 +44,7 @@ public class Router {
     }
 
     public void message(String message, SocketAddress address){
-        sender.udpSend(message, address);
+        sender.udpSend(message + " " +address.toString(), address);
     }
 
     public void print(){
@@ -233,7 +232,11 @@ public class Router {
     }
 
     public void sendDistanceVector(SocketAddress neighbor, DistanceVector distanceVector) {
-        System.out.println("SENDING NOT SUPPORTED YET");
+        sender.udpSend(distanceVector, neighbor);
+    }
+
+    public void sendWeightChange(SocketAddress neighbor, int weight, SocketAddress destination){
+        sender.udpSend(neighbor, weight, destination);
     }
 
     public String getIP() {
@@ -250,6 +253,7 @@ public class Router {
 
     public void changeWeight(SocketAddress address, int weight){
         this.neighborsMap.put(address, weight);
+        sendWeightChange(address, weight, address);
         DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
         this.mostRecentCalculation = recalculateDistanceVector();
         if (!mostRecentCalculation.equals(oldCalculation)) {
