@@ -42,7 +42,7 @@ public class DVCommandThread implements Runnable {
                                 message += lineScanner.next();
                             }
                             SocketAddress address = new SocketAddress(destIp, Integer.parseInt(destPort));
-                            r.message(address, message);
+                            r.message(message, address);
                             break;
                         }
                         case ("CHANGE"): {

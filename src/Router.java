@@ -16,6 +16,7 @@ public class Router {
     private HashMap<SocketAddress, DistanceVector> vectorMap;
     private HashSet<SocketAddress> knownNodes;
     private boolean poison;
+    private DVUDPSender sender;
 
     public static void main(String[] args) {
         Router r;
@@ -39,28 +40,16 @@ public class Router {
 
     public void start(int timeBetweenUpdate){
         ScheduledThreadPoolExecutor threadPool = new ScheduledThreadPoolExecutor(4);
-
         threadPool.scheduleAtFixedRate(new DVUpdateThread(this), 0, timeBetweenUpdate, TimeUnit.SECONDS);
         threadPool.execute(new DVCommandThread(this));
     }
 
-    public void message(SocketAddress address, String message){
-        System.out.println("Command received to send " + message + " to " + address);
+    public void message(String message, SocketAddress address){
+        sender.udpSend(message, address);
     }
 
     public void print(){
         System.out.println("Current distance vector: \n" + mostRecentCalculation.getResultVector());
-    }
-
-    public Router(SocketAddress address) {
-        this.address = address;
-        this.table = new ForwardingTable();
-        this.neighborsMap = new HashMap<>();
-        this.vectorMap = new HashMap<>();
-        this.knownNodes = new HashSet<>();
-        addNeighborsToDistVectMap();
-        addNeighborsToKnownNodes();
-        this.mostRecentCalculation = recalculateDistanceVector();
     }
 
     public Router(SocketAddress address, HashMap<SocketAddress, Integer> neighborsMap, boolean poison) {
@@ -73,6 +62,7 @@ public class Router {
         addNeighborsToDistVectMap();
         addNeighborsToKnownNodes();
         this.mostRecentCalculation = recalculateDistanceVector();
+        this.sender = new DVUDPSender(address.getPort());
     }
 
     private void addNeighborsToDistVectMap() {
