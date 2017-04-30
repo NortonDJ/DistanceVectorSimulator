@@ -7,10 +7,10 @@ import java.util.ArrayList;
 /**
  * Created by nortondj on 4/30/17.
  */
-public class DVUDPSender {
+public class RouterUDPSender {
     private DatagramSocket socket;
 
-    public DVUDPSender(int port) {
+    public RouterUDPSender(int port) {
         try {
             socket = new DatagramSocket(port);
         } catch (SocketException e) {

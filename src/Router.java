@@ -15,7 +15,7 @@ public class Router {
     private HashMap<SocketAddress, DistanceVector> vectorMap;
     private HashSet<SocketAddress> knownNodes;
     private boolean poison;
-    private DVUDPSender sender;
+    private RouterUDPSender sender;
 
     public static void main(String[] args) {
         Router r;
@@ -61,7 +61,7 @@ public class Router {
         addNeighborsToDistVectMap();
         addNeighborsToKnownNodes();
         this.mostRecentCalculation = recalculateDistanceVector();
-        this.sender = new DVUDPSender(address.getPort());
+        this.sender = new RouterUDPSender(address.getPort());
     }
 
     private void addNeighborsToDistVectMap() {
