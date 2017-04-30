@@ -69,9 +69,9 @@ public class DistanceVector {
 
     public String toString(){
         String result = "";
-        result += "SOURCE: " + source + "\n";
+        result += "SOURCE: " + source;
         for(SocketAddress s : valuesMap.keySet()){
-            result += s + " | " + valuesMap.get(s) + "\n";
+            result += "\n" + s + " | " + valuesMap.get(s);
         }
         return result;
     }

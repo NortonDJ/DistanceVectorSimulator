@@ -41,18 +41,22 @@ public class DistanceVectorFactory {
             //GETTING NODE COSTS
             while (lines.hasNext()) {
                 String line = lines.nextLine();
-                String[] words = line.split("[: ]");
-                // splittings words like this gives: [127.0.0.1, 9878, |, 1]
-                String ip = words[0];
-                int port = Integer.parseInt(words[1]);
-                //skip the |
-                int weight = Integer.parseInt(words[3]);
+                if(line.isEmpty()){
+                    continue;
+                } else {
+                    String[] words = line.split("[: ]");
+                    // splittings words like this gives: [127.0.0.1, 9878, |, 1]
+                    String ip = words[0];
+                    int port = Integer.parseInt(words[1]);
+                    //skip the |
+                    int weight = Integer.parseInt(words[3].trim());
 
-                //Create the neighbor's address
-                SocketAddress neighbor = new SocketAddress(ip, port);
+                    //Create the neighbor's address
+                    SocketAddress neighbor = new SocketAddress(ip, port);
 
-                //add the entry to the vector's table
-                vector.addValue(neighbor, weight);
+                    //add the entry to the vector's table
+                    vector.addValue(neighbor, weight);
+                }
             }
             return vector;
         } catch (Exception e) {
