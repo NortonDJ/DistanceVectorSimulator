@@ -1,3 +1,4 @@
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,11 +11,17 @@ import java.util.concurrent.TimeUnit;
 public class Router {
     private ForwardingTable table;
     private DistanceVectorCalculation mostRecentCalculation;
+
+    public SocketAddress getAddress() {
+        return address;
+    }
+
     private SocketAddress address;
     private HashMap<SocketAddress, Integer> neighborsMap;
     private HashMap<SocketAddress, DistanceVector> vectorMap;
     private HashSet<SocketAddress> knownNodes;
     private boolean poison;
+    private DatagramSocket socket;
     private RouterUDPSender sender;
 
     public static void main(String[] args) {
@@ -41,6 +48,7 @@ public class Router {
         ScheduledThreadPoolExecutor threadPool = new ScheduledThreadPoolExecutor(4);
         threadPool.scheduleAtFixedRate(new DVUpdateThread(this), 0, timeBetweenUpdate, TimeUnit.SECONDS);
         threadPool.execute(new DVCommandThread(this));
+        threadPool.execute(new RouterUDPReceiver(socket, this));
     }
 
     public void message(String message, SocketAddress destination){
@@ -68,7 +76,13 @@ public class Router {
         addNeighborsToKnownNodes();
         this.mostRecentCalculation = recalculateDistanceVector();
         updateForwardingTable(this.mostRecentCalculation);
-        this.sender = new RouterUDPSender(address.getPort());
+        try {
+            this.socket = new DatagramSocket(address.getPort());
+        } catch(Exception e){
+            System.out.println("Failed to open socket, exiting.");
+            System.exit(1);
+        }
+        this.sender = new RouterUDPSender(socket);
     }
 
     private void addNeighborsToDistVectMap() {

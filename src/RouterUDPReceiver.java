@@ -9,17 +9,13 @@ public class RouterUDPReceiver implements Runnable {
     private DatagramSocket socket;
     private Router r;
 
-    public RouterUDPReceiver(int port, Router r){
-        try {
-            this.socket = new DatagramSocket(port);
-            this.r = r;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public RouterUDPReceiver(DatagramSocket socket, Router r) {
+        this.socket = socket;
+        this.r = r;
     }
 
-    public static void main(String[] args){
-        if(args.length == 0) {
+    public static void main(String[] args) {
+        if (args.length == 0) {
 
         } else {
             UDPReceiver r = new UDPReceiver(Integer.parseInt(args[0]));
@@ -27,7 +23,7 @@ public class RouterUDPReceiver implements Runnable {
         }
     }
 
-    public void run(){
+    public void run() {
         try {
             while (true) {
                 byte[] receive = new byte[1024];
@@ -35,7 +31,7 @@ public class RouterUDPReceiver implements Runnable {
                 socket.receive(p);
                 decode(p.getData());
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -104,7 +100,7 @@ public class RouterUDPReceiver implements Runnable {
                     System.exit(1);
                 }
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Exception has occurred in receiving message");
             e.printStackTrace();
         }

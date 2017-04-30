@@ -10,12 +10,8 @@ import java.util.ArrayList;
 public class RouterUDPSender {
     private DatagramSocket socket;
 
-    public RouterUDPSender(int port) {
-        try {
-            socket = new DatagramSocket(port);
-        } catch (SocketException e) {
-            System.exit(1);
-        }
+    public RouterUDPSender(DatagramSocket socket) {
+        this.socket = socket;
     }
 
     public void udpSend(String message, SocketAddress via, SocketAddress destination) {
@@ -32,7 +28,7 @@ public class RouterUDPSender {
 
         //add encoding for destination
         byte[] destinationBytes = destinationString.getBytes();
-        for(int i = 0; i < destinationBytes.length; i++, index++){
+        for (int i = 0; i < destinationBytes.length; i++, index++) {
             bytes[index] = destinationBytes[i];
         }
 
@@ -41,7 +37,7 @@ public class RouterUDPSender {
 
         //add encoding for message
         byte[] messageBytes = message.getBytes();
-        for(int i = 0; i < messageBytes.length; i++, index++){
+        for (int i = 0; i < messageBytes.length; i++, index++) {
             bytes[index] = messageBytes[i];
         }
 
@@ -83,7 +79,7 @@ public class RouterUDPSender {
         sendBytes(bytes, destination);
     }
 
-    public void udpSend(SocketAddress neighbor, int weight, SocketAddress destination){
+    public void udpSend(SocketAddress neighbor, int weight, SocketAddress destination) {
         String message = neighbor.toString() + ", " + weight;
         byte[] bytes = new byte[message.length() + 1];
         byte identifier = 1; // start of header ascii
