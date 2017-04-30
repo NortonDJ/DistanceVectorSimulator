@@ -15,6 +15,26 @@ public class Router {
     private boolean poison;
 
     public static void main(String[] args) {
+        Router r;
+        if(args.length == 0){
+            System.out.println("Please re-run the Router with the following format:");
+            System.out.println("java Router [-reverse] <neighbors.txt>");
+            return;
+        } else if(args.length == 1){
+            r = RouterFactory.makeRouter(args[0], false);
+        } else {
+            if(args[0].equals("-reverse")) {
+                r = RouterFactory.makeRouter(args[1], true);
+            } else {
+                System.out.println("Please re-run the Router with the following format:");
+                System.out.println("java Router [-reverse] <neighbors.txt>");
+                return;
+            }
+        }
+        r.start();
+    }
+
+    public void start(){
 
     }
 
