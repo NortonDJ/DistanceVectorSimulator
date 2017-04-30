@@ -43,8 +43,14 @@ public class Router {
         threadPool.execute(new DVCommandThread(this));
     }
 
-    public void message(String message, SocketAddress address){
-        sender.udpSend(message + " " +address.toString(), address);
+    public void message(String message, SocketAddress destination){
+        SocketAddress via = table.getNext(destination);
+        if(via == null){
+            System.out.println("Router could not find a way to send to " + destination);
+            return;
+        } else {
+            sender.udpSend(message, via, destination);
+        }
     }
 
     public void print(){
@@ -61,6 +67,7 @@ public class Router {
         addNeighborsToDistVectMap();
         addNeighborsToKnownNodes();
         this.mostRecentCalculation = recalculateDistanceVector();
+        updateForwardingTable(this.mostRecentCalculation);
         this.sender = new RouterUDPSender(address.getPort());
     }
 
@@ -184,6 +191,14 @@ public class Router {
         }
     }
 
+    public void receiveMessage(String message, SocketAddress destination){
+        if(destination.equals(address)){
+            System.out.println("RECEIVED MESSAGE FINALLY: " + message);
+        } else {
+            message(message, destination);
+        }
+    }
+
     public Integer findDistance(SocketAddress node, SocketAddress destination, DistanceVector nodeDistanceVector){
         // if the neighbor has not sent a distance vector,
         //     we check if the neighbor and destination are the same
@@ -228,7 +243,7 @@ public class Router {
     }
 
     public void updateForwardingTable(DistanceVectorCalculation calculation) {
-        System.out.println("UPDATE FORWARDING TABLE NOT SUPPORTED YET");
+        table.update(calculation);
     }
 
     public void sendDistanceVector(SocketAddress neighbor, DistanceVector distanceVector) {
