@@ -40,7 +40,7 @@ public class DVCommandThread implements Runnable {
                             message += lineScanner.next();
                         }
                         SocketAddress address = new SocketAddress(destIp, Integer.parseInt(destPort));
-                        r.message(address);
+                        r.message(address, message);
                         break;
                     }
                 }

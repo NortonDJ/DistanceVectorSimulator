@@ -44,8 +44,8 @@ public class Router {
         threadPool.execute(new DVCommandThread(this));
     }
 
-    public void message(SocketAddress address){
-        System.out.println("Command received to message " + address);
+    public void message(SocketAddress address, String message){
+        System.out.println("Command received to send " + message + " to " + address);
     }
 
     public void print(){
