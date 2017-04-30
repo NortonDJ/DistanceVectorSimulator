@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by nortondj on 4/26/17.
@@ -31,11 +34,22 @@ public class Router {
                 return;
             }
         }
-        r.start();
+        r.start(30);
     }
 
-    public void start(){
+    public void start(int timeBetweenUpdate){
+        ScheduledThreadPoolExecutor threadPool = new ScheduledThreadPoolExecutor(4);
 
+        threadPool.scheduleAtFixedRate(new DVUpdateThread(this), 0, timeBetweenUpdate, TimeUnit.SECONDS);
+        threadPool.execute(new DVCommandThread(this));
+    }
+
+    public void message(SocketAddress address){
+        System.out.println("Command received to message " + address);
+    }
+
+    public void print(){
+        System.out.println("Current distance vector: \n" + mostRecentCalculation.getResultVector());
     }
 
     public Router(SocketAddress address) {
