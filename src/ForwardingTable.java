@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -9,5 +10,30 @@ public class ForwardingTable {
 
     public ForwardingTable(){
         this.table = new HashMap<>();
+    }
+
+    public SocketAddress getNext(SocketAddress destination){
+        return table.getOrDefault(destination, null);
+    }
+
+    public void update(DistanceVectorCalculation calculation){
+        HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap = calculation.getPathMap();
+        for(SocketAddress address : pathMap.keySet()){
+            ArrayList<SocketAddress> path = pathMap.get(address);
+            if(path.isEmpty()){
+                System.out.println("Forwarding table found a path that is empty:\n" +
+                        "Address : " + address);
+                System.exit(1);
+                return;
+            }
+            //knowing that path.get(0) is the source, next hop at index 1
+            SocketAddress nextHop;
+            if(path.size() == 1){
+                nextHop = path.get(0);
+            } else {
+                nextHop = path.get(1);
+            }
+            table.put(address, nextHop);
+        }
     }
 }
