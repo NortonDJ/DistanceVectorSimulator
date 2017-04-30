@@ -258,6 +258,16 @@ public class Router {
         return neighborsMap.containsKey(address);
     }
 
+    public void changeWeight(SocketAddress address, int weight){
+        this.neighborsMap.put(address, weight);
+        DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
+        this.mostRecentCalculation = recalculateDistanceVector();
+        if (!mostRecentCalculation.equals(oldCalculation)) {
+            updateForwardingTable(mostRecentCalculation);
+            broadCastDistanceVector(mostRecentCalculation);
+        }
+    }
+
     public int getNeighborWeight(SocketAddress address) {
         return neighborsMap.getOrDefault(address, -1);
     }
