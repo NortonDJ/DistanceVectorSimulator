@@ -18,15 +18,35 @@ public class RouterUDPSender {
         }
     }
 
-    public void udpSend(String message, SocketAddress destination) {
-        byte[] bytes = new byte[message.length() + 1];
+    public void udpSend(String message, SocketAddress via, SocketAddress destination) {
+        //message format is [2, destAddress.toString().getBytes(), 15, message.getBytes()]
+        String destinationString = destination.toString();
+        int size = 1 + destinationString.length() + 1 + message.length();
+        byte[] bytes = new byte[size];
+
+        //add identifier
         byte identifier = 2; // start of text
         bytes[0] = identifier;
-        byte[] messageBytes = message.getBytes();
-        for (int i = 0; i < messageBytes.length; i++) {
-            bytes[i + 1] = messageBytes[i];
+
+        int index = 1; //index in bytes array for next position
+
+        //add encoding for destination
+        byte[] destinationBytes = destinationString.getBytes();
+        for(int i = 0; i < destinationBytes.length; i++, index++){
+            bytes[index] = destinationBytes[i];
         }
-        sendBytes(bytes, destination);
+
+        //add separator
+        bytes[index++] = 15;
+
+        //add encoding for message
+        byte[] messageBytes = message.getBytes();
+        for(int i = 0; i < messageBytes.length; i++, index++){
+            bytes[index] = messageBytes[i];
+        }
+
+        //send the message to the next node
+        sendBytes(bytes, via);
     }
 
     public void sendBytes(byte[] bytes, SocketAddress destination) {
