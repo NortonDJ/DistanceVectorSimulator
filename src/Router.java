@@ -1,4 +1,5 @@
 import java.net.DatagramSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,13 +52,14 @@ public class Router {
         threadPool.execute(new RouterUDPReceiver(socket, this));
     }
 
-    public void message(String message, SocketAddress destination){
+    public SocketAddress message(String message, SocketAddress destination){
         SocketAddress via = table.getNext(destination);
         if(via == null){
             System.out.println("Router could not find a way to send to " + destination);
-            return;
+            return null;
         } else {
-            sender.udpSend(message, via, destination);
+            sender.udpSend(message.trim() + " | " + address.toString(), via, destination);
+            return via;
         }
     }
 
@@ -223,11 +225,26 @@ public class Router {
         }
     }
 
-    public void receiveMessage(String message, SocketAddress destination){
+    public void receiveMessage(String message, SocketAddress from, SocketAddress destination){
         if(destination.equals(address)){
             System.out.println("RECEIVED MESSAGE FINALLY: " + message);
         } else {
-            message(message, destination);
+            forward(message, from, destination);
+        }
+    }
+
+    public void forward(String message, SocketAddress from, SocketAddress destination){
+        SocketAddress via = table.getNext(destination);
+        if(via == null){
+            System.out.println("Router could not find a way to send to " + destination);
+        } else {
+            String newMessage = message.trim() + " | " + address.toString();
+            System.out.println("Message " + message +
+                    " from " + from +
+                    " to " + destination +
+                    " forwarded to " + via);
+            System.out.println("msg(" + newMessage + ")");
+            sender.udpSend(newMessage, via, destination);
         }
     }
 
