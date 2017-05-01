@@ -1,5 +1,6 @@
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 /**
  * Created by nortondj on 4/30/17.
@@ -20,14 +21,15 @@ public class RouterUDPReceiver implements Runnable {
                 byte[] receive = new byte[1024];
                 DatagramPacket p = new DatagramPacket(receive, receive.length);
                 socket.receive(p);
-                decode(p.getData());
+                decode(p);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void decode(byte[] bytes) {
+    public void decode(DatagramPacket packet) {
+        byte[] bytes = packet.getData();
         try {
             byte first = bytes[0];
             switch (first) {
@@ -83,7 +85,13 @@ public class RouterUDPReceiver implements Runnable {
                         messageBytes[i] = bytes[delimIndex + 1 + i];
                     }
                     String message = new String(messageBytes);
-                    r.receiveMessage(message, destAddress);
+
+                    //Extract sender information
+                    InetAddress address = packet.getAddress();
+                    String fromIp = address.getHostAddress();
+                    int port = packet.getPort();
+                    SocketAddress fromAddress = new SocketAddress(fromIp, port);
+                    r.receiveMessage(message, fromAddress, destAddress);
                     break;
                 }
                 default: {
