@@ -107,6 +107,8 @@ public class Router {
      * @return true if the vector caused a broadcast
      */
     public boolean receiveDistanceVector(DistanceVector vector) {
+        System.out.println("New dv received from " + vector.getSource() +
+                " with the following " + vector.distancesString());
         this.vectorMap.put(vector.getSource(), vector);
         for(SocketAddress s : vector.getNodes()){
             this.knownNodes.add(s);

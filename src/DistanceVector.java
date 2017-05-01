@@ -75,4 +75,12 @@ public class DistanceVector {
         }
         return result;
     }
+
+    public String distancesString(){
+        String result ="distances: ";
+        for(SocketAddress s : valuesMap.keySet()){
+            result += "\n" + s + " " + valuesMap.get(s);
+        }
+        return result;
+    }
 }

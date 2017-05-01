@@ -55,9 +55,6 @@ public class RouterUDPSender {
                     new DatagramPacket(bytes, bytes.length,
                             IPAddress, port);
             socket.send(sendPacket);
-            System.out.println(this);
-            System.out.println("    sent message: " + new String(bytes));
-            System.out.println("        to " + destination);
         } catch (UnknownHostException e) {
             System.out.println(e.getMessage());
             return;
