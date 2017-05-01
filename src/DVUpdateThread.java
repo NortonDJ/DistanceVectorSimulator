@@ -10,7 +10,7 @@ public class DVUpdateThread implements Runnable{
     }
 
     public void run(){
-        r.broadCastDistanceVector(r.getMostRecentCalculation());
+        r.broadCastTimeout();
         r.incrementTimerCounts();
     }
 
