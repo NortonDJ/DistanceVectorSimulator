@@ -59,9 +59,9 @@ public class RouterUDPReceiver implements Runnable {
                     String[] words = message.split("[:,]");
                     String ip = words[0];
                     int port = Integer.parseInt(words[1]);
-                    int weight = Integer.parseInt(words[2]);
+                    int weight = Integer.parseInt(words[2].trim());
                     SocketAddress neighbor = new SocketAddress(ip, port);
-                    r.changeWeight(neighbor, weight);
+                    r.receiveWeight(neighbor, weight);
                     break;
                 }
                 case (2): {

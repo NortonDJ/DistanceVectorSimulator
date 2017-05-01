@@ -266,8 +266,8 @@ public class Router {
         sender.udpSend(distanceVector, neighbor);
     }
 
-    public void sendWeightChange(SocketAddress neighbor, int weight, SocketAddress destination){
-        sender.udpSend(neighbor, weight, destination);
+    public void sendWeightChange(int weight, SocketAddress destination){
+        sender.udpSend(address, weight, destination);
     }
 
     public String getIP() {
@@ -282,9 +282,20 @@ public class Router {
         return neighborsMap.containsKey(address);
     }
 
-    public void changeWeight(SocketAddress address, int weight){
-        this.neighborsMap.put(address, weight);
-        sendWeightChange(address, weight, address);
+    public void receiveWeight(SocketAddress neighbor, int weight){
+        System.out.println("New weight to neighbor " + neighbor+ " of " + weight + "\n");
+        this.neighborsMap.put(neighbor, weight);
+        DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
+        this.mostRecentCalculation = recalculateDistanceVector();
+        if (!mostRecentCalculation.equals(oldCalculation)) {
+            updateForwardingTable(mostRecentCalculation);
+            broadCastDistanceVector(mostRecentCalculation);
+        }
+    }
+
+    public void changeWeight(SocketAddress neighbor, int weight){
+        this.neighborsMap.put(neighbor, weight);
+        sendWeightChange(weight, neighbor);
         DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
         this.mostRecentCalculation = recalculateDistanceVector();
         if (!mostRecentCalculation.equals(oldCalculation)) {
