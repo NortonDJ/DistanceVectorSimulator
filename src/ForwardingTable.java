@@ -28,8 +28,8 @@ public class ForwardingTable {
             if(path.isEmpty()){
                 System.out.println("Forwarding table found a path that is empty:\n" +
                         "Address : " + address);
-                System.exit(1);
-                return;
+                //System.exit(1);
+                continue;
             }
             //knowing that path.get(0) is the source, next hop at index 1
             SocketAddress nextHop;
