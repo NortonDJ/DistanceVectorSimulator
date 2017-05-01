@@ -42,7 +42,6 @@ public class Router {
             }
         }
         r.start(30);
-        r.close();
     }
 
     public void start(int timeBetweenUpdate){
@@ -120,14 +119,25 @@ public class Router {
     public boolean updateDistanceVector(){
         DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
         this.mostRecentCalculation = recalculateDistanceVector();
+        DistanceVector vector = mostRecentCalculation.getResultVector();
+        HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap = mostRecentCalculation.getPathMap();
+        boolean change;
         // if a change has occurred
         if (!mostRecentCalculation.equals(oldCalculation)) {
             updateForwardingTable(mostRecentCalculation);
             broadCastDistanceVector(mostRecentCalculation);
-            return true;
+            change = true;
+            String s = "new dv calculated:";
+            for(SocketAddress node : pathMap.keySet()) {
+                SocketAddress nextHop = table.getNext(node);
+                String pathString = nextHop == null ? "~" : nextHop.toString();
+                s += "\n" + node + " " + vector.getValue(node) + " " + pathString;
+            }
+            System.out.println(s);
         } else {
-            return false;
+            change = false;
         }
+        return change;
     }
 
     /**
