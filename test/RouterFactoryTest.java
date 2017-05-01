@@ -11,6 +11,7 @@ public class RouterFactoryTest {
         Router r = RouterFactory.makeRouter("resources/neighbors1.txt", false);
         Assert.assertEquals("127.0.0.1", r.getIP());
         Assert.assertEquals(new Integer(9876), r.getPort());
+        r.close();
     }
 
     @Test
@@ -26,6 +27,7 @@ public class RouterFactoryTest {
         Assert.assertEquals(1, r.getNeighborWeight(n1));
         Assert.assertEquals(1, r.getNeighborWeight(n2));
         Assert.assertEquals(1, r.getNeighborWeight(n3));
+        r.close();
     }
 
 }

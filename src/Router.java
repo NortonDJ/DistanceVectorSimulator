@@ -42,6 +42,7 @@ public class Router {
             }
         }
         r.start(30);
+        r.close();
     }
 
     public void start(int timeBetweenUpdate){
@@ -309,6 +310,10 @@ public class Router {
 
     public DistanceVectorCalculation getMostRecentCalculation() {
         return mostRecentCalculation;
+    }
+
+    public void close(){
+        this.socket.close();
     }
 
 }

@@ -23,6 +23,7 @@ public class RouterTest {
         Assert.assertEquals(expectedWeight1, resultVec.getValue(n1));
         Assert.assertEquals(expectedWeight2, resultVec.getValue(n2));
         Assert.assertEquals(expectedWeight3, resultVec.getValue(n3));
+        r.close();
     }
 
     @Test
@@ -33,6 +34,7 @@ public class RouterTest {
         DistanceVector resultVec = result.getResultVector();
         HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap = result.getPathMap();
         Assert.assertEquals(new Integer(0), resultVec.getValue(source));
+        r.close();
     }
 
     @Test
@@ -85,6 +87,7 @@ public class RouterTest {
         Assert.assertEquals(expectedWeight1, resultVec.getValue(n1));
         Assert.assertEquals(expectedWeight2, resultVec.getValue(n2));
         Assert.assertEquals(expectedWeight3, resultVec.getValue(n3));
+        r.close();
     }
 
     @Test
@@ -124,6 +127,7 @@ public class RouterTest {
         Assert.assertEquals(expectedWeight1, resultVec.getValue(n1));
         Assert.assertEquals(expectedWeight2, resultVec.getValue(n2));
         Assert.assertEquals(expectedWeight3, resultVec.getValue(n3));
+        r.close();
     }
 
     @Test
@@ -142,6 +146,7 @@ public class RouterTest {
         r.receiveDistanceVector(n1vector);
 
         Assert.assertEquals(9, r.getDistanceVectorWeight(n4));
+        r.close();
     }
 
     @Test
@@ -161,6 +166,7 @@ public class RouterTest {
         n1vector.addValue(n3,7);
 
         Assert.assertTrue(r.receiveDistanceVector(n1vector));
+        r.close();
     }
 
     @Test
@@ -180,6 +186,7 @@ public class RouterTest {
         n1vector.addValue(n3,10000);
 
         Assert.assertFalse(r.receiveDistanceVector(n1vector));
+        r.close();
     }
 
 }
