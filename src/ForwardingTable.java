@@ -18,7 +18,11 @@ public class ForwardingTable {
 
     public void update(DistanceVectorCalculation calculation){
         HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap = calculation.getPathMap();
+        DistanceVector vector = calculation.getResultVector();
         for(SocketAddress address : pathMap.keySet()){
+            if(vector.getValue(address) == Integer.MAX_VALUE || vector.getValue(address) == 0){
+                continue;
+            }
             ArrayList<SocketAddress> path = pathMap.get(address);
             if(path.isEmpty()){
                 System.out.println("Forwarding table found a path that is empty:\n" +
