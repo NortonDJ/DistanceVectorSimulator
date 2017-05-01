@@ -78,8 +78,8 @@ public class DistanceVectorTest {
         pathMap.put(n3, pathn3);
 
         d.applyPoison(n2, pathMap);
-        Assert.assertEquals(new Integer(Integer.MAX_VALUE), d.getValue(n1));
-        Assert.assertEquals(new Integer(Integer.MAX_VALUE), d.getValue(n2));
+        Assert.assertEquals(new Integer(16), d.getValue(n1));
+        Assert.assertEquals(new Integer(16), d.getValue(n2));
     }
 
 }

@@ -29,7 +29,7 @@ public class DistanceVector {
     }
 
     public Integer getValue(SocketAddress address){
-        return this.valuesMap.getOrDefault(address, Integer.MAX_VALUE);
+        return this.valuesMap.getOrDefault(address, 16);
     }
 
     public void applyPoison(SocketAddress destination, HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap){
@@ -43,7 +43,7 @@ public class DistanceVector {
             }
             //if the path contains the destination, then poison it
             if(path.contains(destination)){
-                valuesMap.put(s, Integer.MAX_VALUE);
+                valuesMap.put(s, 16);
             }
         }
     }

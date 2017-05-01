@@ -55,7 +55,7 @@ public class RouterTest {
         //from n1 -> n1, we expect 0 by definition
         Assert.assertEquals(new Integer(0), r.findDistance(n1,n1,n1vector));
         //from n1 -> n2, we expect inf, due to unconnected
-        Assert.assertEquals(new Integer(Integer.MAX_VALUE), r.findDistance(n1,n2,n1vector));
+        Assert.assertEquals(new Integer(16), r.findDistance(n1,n2,n1vector));
         //from n1 -> n3, we expect 5, by value
         Assert.assertEquals(new Integer(5), r.findDistance(n1,n3,n1vector));
     }

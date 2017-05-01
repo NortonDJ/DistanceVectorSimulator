@@ -196,7 +196,7 @@ public class Router {
             if(destination.equals(address)){
                 continue;
             }
-            Integer minimum = Integer.MAX_VALUE;
+            Integer minimum = 16;
             ArrayList<SocketAddress> path = new ArrayList<>();
 
             // the path to the node must include a neighbor,
@@ -213,8 +213,8 @@ public class Router {
                 Integer distanceNeighborToDest = findDistance(neighbor, destination, neighborDistanceVector);
 
                 Integer calculation;
-                if (distanceToNeighbor == Integer.MAX_VALUE || distanceNeighborToDest == Integer.MAX_VALUE) {
-                    calculation = Integer.MAX_VALUE;
+                if (distanceToNeighbor >= 16 || distanceNeighborToDest == 16) {
+                    calculation = 16;
                 } else {
                     calculation = distanceToNeighbor + distanceNeighborToDest;
                 }
@@ -230,7 +230,7 @@ public class Router {
             // Add the minimum distance from this node to the destination to DV,
             newVec.addValue(destination, minimum);
             // if the destination is reachable, add it to the path
-            if(minimum != Integer.MAX_VALUE){
+            if(minimum < 16){
                 // Add the knowledge of node->(destination if exist)->dest
                 path.add(destination);
             }
@@ -291,7 +291,7 @@ public class Router {
             } else {
                 // destination and neighbor are different and
                 // no direct path from neighbor->dest
-                distanceNodeToDest = Integer.MAX_VALUE;
+                distanceNodeToDest = 16;
             }
         } else {
             // we know dneighbor->dest
