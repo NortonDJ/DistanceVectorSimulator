@@ -1,3 +1,4 @@
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -39,5 +40,9 @@ public class ForwardingTable {
             }
             table.put(address, nextHop);
         }
+    }
+
+    public void remove(SocketAddress node){
+        this.table.remove(node);
     }
 }

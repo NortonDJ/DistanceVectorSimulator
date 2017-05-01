@@ -12,15 +12,11 @@ import java.util.concurrent.TimeUnit;
 public class Router {
     private ForwardingTable table;
     private DistanceVectorCalculation mostRecentCalculation;
-
-    public SocketAddress getAddress() {
-        return address;
-    }
-
     private SocketAddress address;
     private HashMap<SocketAddress, Integer> neighborsMap;
     private HashMap<SocketAddress, DistanceVector> vectorMap;
     private HashSet<SocketAddress> knownNodes;
+    private HashMap<SocketAddress, Integer> timerCounts;
     private boolean poison;
     private DatagramSocket socket;
     private RouterUDPSender sender;
@@ -42,7 +38,7 @@ public class Router {
                 return;
             }
         }
-        r.start(30);
+        r.start(10);
     }
 
     public void start(int timeBetweenUpdate){
@@ -65,6 +61,30 @@ public class Router {
 
     public void print(){
         System.out.println("Current distance vector: \n" + mostRecentCalculation.getResultVector());
+        for(SocketAddress s : vectorMap.keySet()){
+            System.out.println("Distance vector from : " + s +  "\n" + vectorMap.get(s));
+        }
+    }
+
+    public void incrementTimerCounts(){
+        for(SocketAddress s : timerCounts.keySet()){
+            int count = timerCounts.get(s);
+            if(count++ == 3){
+                dropNeighbor(s);
+            } else {
+                timerCounts.put(s, count);
+            }
+        }
+    }
+
+    public void dropNeighbor(SocketAddress neighbor){
+        System.out.println("neighbor" + neighbor + "dropped");
+        this.neighborsMap.remove(neighbor);
+        this.vectorMap.remove(neighbor);
+        this.knownNodes.remove(neighbor);
+        this.table.remove(neighbor);
+        this.timerCounts.remove(neighbor);
+        updateDistanceVector();
     }
 
     public Router(SocketAddress address, HashMap<SocketAddress, Integer> neighborsMap, boolean poison) {
@@ -73,9 +93,11 @@ public class Router {
         this.neighborsMap = neighborsMap;
         this.vectorMap = new HashMap<>();
         this.knownNodes = new HashSet<>();
+        this.timerCounts = new HashMap<>();
         this.poison = poison;
         addNeighborsToDistVectMap();
         addNeighborsToKnownNodes();
+        addNeighborsToTimerCounts();
         this.mostRecentCalculation = recalculateDistanceVector();
         updateForwardingTable(this.mostRecentCalculation);
         try {
@@ -85,6 +107,12 @@ public class Router {
             System.exit(1);
         }
         this.sender = new RouterUDPSender(socket);
+    }
+
+    private void addNeighborsToTimerCounts(){
+        for(SocketAddress neighbor: neighborsMap.keySet()){
+            this.timerCounts.put(neighbor, 0);
+        }
     }
 
     private void addNeighborsToDistVectMap() {
@@ -111,7 +139,9 @@ public class Router {
     public boolean receiveDistanceVector(DistanceVector vector) {
         System.out.println("New dv received from " + vector.getSource() +
                 " with the following " + vector.distancesString());
-        this.vectorMap.put(vector.getSource(), vector);
+        SocketAddress source = vector.getSource();
+        this.vectorMap.put(source, vector);
+        this.timerCounts.put(source, 0);
         for(SocketAddress s : vector.getNodes()){
             this.knownNodes.add(s);
         }
@@ -323,6 +353,7 @@ public class Router {
 
     public void changeWeight(SocketAddress neighbor, int weight){
         this.neighborsMap.put(neighbor, weight);
+        this.timerCounts.put(neighbor, 0);
         sendWeightChange(weight, neighbor);
         updateDistanceVector();
     }
