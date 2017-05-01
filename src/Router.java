@@ -113,7 +113,10 @@ public class Router {
         for(SocketAddress s : vector.getNodes()){
             this.knownNodes.add(s);
         }
+        return updateDistanceVector();
+    }
 
+    public boolean updateDistanceVector(){
         DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
         this.mostRecentCalculation = recalculateDistanceVector();
         // if a change has occurred
@@ -147,7 +150,9 @@ public class Router {
         pathMap.put(address, sourcePath);
 
         for (SocketAddress destination : knownNodes) {
-
+            if(destination.equals(address)){
+                continue;
+            }
             Integer minimum = Integer.MAX_VALUE;
             ArrayList<SocketAddress> path = new ArrayList<>();
 
@@ -285,23 +290,13 @@ public class Router {
     public void receiveWeight(SocketAddress neighbor, int weight){
         System.out.println("New weight to neighbor " + neighbor+ " of " + weight + "\n");
         this.neighborsMap.put(neighbor, weight);
-        DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
-        this.mostRecentCalculation = recalculateDistanceVector();
-        if (!mostRecentCalculation.equals(oldCalculation)) {
-            updateForwardingTable(mostRecentCalculation);
-            broadCastDistanceVector(mostRecentCalculation);
-        }
+        updateDistanceVector();
     }
 
     public void changeWeight(SocketAddress neighbor, int weight){
         this.neighborsMap.put(neighbor, weight);
         sendWeightChange(weight, neighbor);
-        DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
-        this.mostRecentCalculation = recalculateDistanceVector();
-        if (!mostRecentCalculation.equals(oldCalculation)) {
-            updateForwardingTable(mostRecentCalculation);
-            broadCastDistanceVector(mostRecentCalculation);
-        }
+        updateDistanceVector();
     }
 
     public int getNeighborWeight(SocketAddress address) {
