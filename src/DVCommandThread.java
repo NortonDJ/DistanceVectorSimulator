@@ -44,7 +44,6 @@ public class DVCommandThread implements Runnable {
                             while(lineScanner.hasNext()){
                                 message += " " + lineScanner.next();
                             }
-                            System.out.println("Message: |" + message);
                             SocketAddress address = new SocketAddress(destIp, Integer.parseInt(destPort));
                             r.message(message, address);
                             break;
