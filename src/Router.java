@@ -24,6 +24,9 @@ public class Router {
     private DatagramSocket socket;
     private RouterUDPSender sender;
 
+    //TODO what happens if nodes are dropped and later are rejoined by a late DV
+    //TODO is infinity rejected by DV calculation???
+
     public static void main(String[] args) {
         Router r;
         if (args.length == 0) {
@@ -118,6 +121,13 @@ public class Router {
             System.exit(1);
         }
         this.sender = new RouterUDPSender(socket);
+        broadCastWeights();
+    }
+
+    public void broadCastWeights(){
+        for(SocketAddress neighbor : neighborsMap.keySet()){
+            sendWeightChange(neighborsMap.get(neighbor), neighbor);
+        }
     }
 
     private void addNeighborsToTimerCounts() {
@@ -240,13 +250,13 @@ public class Router {
             }
 
             // Add the minimum distance from this node to the destination to DV,
-            newVec.addValue(destination, minimum);
             // if the destination is reachable, add it to the path
             if (minimum < 16) {
+                newVec.addValue(destination, minimum);
                 // Add the knowledge of node->(destination if exist)->dest
                 path.add(destination);
+                pathMap.put(destination, path);
             }
-            pathMap.put(destination, path);
         }
         return new DistanceVectorCalculation(newVec, pathMap);
     }
