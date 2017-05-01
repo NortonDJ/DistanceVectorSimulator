@@ -14,15 +14,6 @@ public class RouterUDPReceiver implements Runnable {
         this.r = r;
     }
 
-    public static void main(String[] args) {
-        if (args.length == 0) {
-
-        } else {
-            UDPReceiver r = new UDPReceiver(Integer.parseInt(args[0]));
-            r.run();
-        }
-    }
-
     public void run() {
         try {
             while (true) {
