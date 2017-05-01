@@ -24,9 +24,6 @@ public class Router {
     private DatagramSocket socket;
     private RouterUDPSender sender;
 
-    //TODO what happens if nodes are dropped and later are rejoined by a late DV
-    //TODO is infinity rejected by DV calculation???
-
     public static void main(String[] args) {
         Router r;
         if (args.length == 0) {
