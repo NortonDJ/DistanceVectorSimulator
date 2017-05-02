@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by nortondj on 4/30/17.
@@ -45,7 +46,16 @@ public class DVCommandThread implements Runnable {
                                 message += " " + lineScanner.next();
                             }
                             SocketAddress address = new SocketAddress(destIp, Integer.parseInt(destPort));
-                            r.message(message, address);
+                            long timeStart = System.currentTimeMillis();
+                            ReentrantLock lock = r.getLock();
+                            lock.lock();
+                            try {
+                                r.message(message, address);
+                            } finally {
+                                long timeStop = System.currentTimeMillis();
+                                System.out.println("Time spent DVC with between lock and unlock: " + (timeStop-timeStart));
+                                lock.unlock();
+                            }
                             break;
                         }
                         case ("CHANGE"): {
@@ -53,7 +63,16 @@ public class DVCommandThread implements Runnable {
                             String destPort = lineScanner.next();
                             String weight = lineScanner.next();
                             SocketAddress address = new SocketAddress(destIp, Integer.parseInt(destPort));
-                            r.changeWeight(address, Integer.parseInt(weight));
+                            long timeStart = System.currentTimeMillis();
+                            ReentrantLock lock = r.getLock();
+                            lock.lock();
+                            try {
+                                r.changeWeight(address, Integer.parseInt(weight));
+                            } finally {
+                                long timeStop = System.currentTimeMillis();
+                                System.out.println("Time spent DVC with between lock and unlock: " + (timeStop-timeStart));
+                                lock.unlock();
+                            }
                             break;
                         }
                     }

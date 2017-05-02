@@ -1,3 +1,5 @@
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Created by nortondj on 4/30/17.
  */
@@ -10,8 +12,17 @@ public class DVUpdateThread implements Runnable{
     }
 
     public void run(){
-        r.broadCastTimeout();
-        r.incrementTimerCounts();
+        long timeStart = System.currentTimeMillis();
+        ReentrantLock lock = r.getLock();
+        lock.lock();
+        try {
+            r.broadCastTimeout();
+            r.incrementTimerCounts();
+        } finally {
+            long timeStop = System.currentTimeMillis();
+            System.out.println("Time spent DVU with between lock and unlock: " + (timeStop-timeStart));
+            lock.unlock();
+        }
     }
 
 }

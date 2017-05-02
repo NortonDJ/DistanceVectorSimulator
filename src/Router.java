@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by nortondj on 4/26/17.
@@ -23,6 +25,7 @@ public class Router {
     private boolean poison;
     private DatagramSocket socket;
     private RouterUDPSender sender;
+    private ReentrantLock lock;
 
     public static void main(String[] args) {
         Router r;
@@ -49,6 +52,10 @@ public class Router {
         threadPool.scheduleAtFixedRate(new DVUpdateThread(this), 0, timeBetweenUpdate, TimeUnit.SECONDS);
         threadPool.execute(new DVCommandThread(this));
         threadPool.execute(new RouterUDPReceiver(socket, this));
+    }
+
+    public ReentrantLock getLock(){
+        return this.lock;
     }
 
     public SocketAddress message(String message, SocketAddress destination) {
@@ -99,6 +106,7 @@ public class Router {
     }
 
     public Router(SocketAddress address, HashMap<SocketAddress, Integer> neighborsMap, boolean poison) {
+        this.lock = new ReentrantLock();
         this.address = address;
         this.table = new ForwardingTable();
         this.neighborsMap = neighborsMap;
