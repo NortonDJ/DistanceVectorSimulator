@@ -44,7 +44,7 @@ public class Router {
                 return;
             }
         }
-        r.start(10);
+        r.start(30);
     }
 
     public void start(int timeBetweenUpdate) {
