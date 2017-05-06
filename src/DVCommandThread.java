@@ -32,7 +32,16 @@ public class DVCommandThread implements Runnable {
                             break;
                         }
                         case ("PRINT"): {
-                            r.print();
+                            long timeStart = System.currentTimeMillis();
+                            ReentrantLock lock = r.getLock();
+                            lock.lock();
+                            try {
+                                r.print();
+                            } finally {
+                                long timeStop = System.currentTimeMillis();
+                                System.out.println("Time spent DVC with between lock and unlock: " + (timeStop-timeStart));
+                                lock.unlock();
+                            }
                             break;
                         }
                         case ("MSG"): {
