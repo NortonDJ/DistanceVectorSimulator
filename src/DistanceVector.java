@@ -4,34 +4,60 @@ import java.util.HashMap;
 import java.util.Set;
 
 /**
- * Created by nortondj on 4/26/17.
+ * Simulatior of Distance-vector routing algorithm
+ * 
+ * @Author Yizhong Chen, Darren Norton
+ * @version May.6th.2017
  */
 public class DistanceVector {
     private HashMap<SocketAddress, Integer> valuesMap;
     private SocketAddress source;
 
+    /**
+     * Constructor of Distance-Vector
+     */
     public DistanceVector(SocketAddress source){
         this.source = source;
         this.valuesMap = new HashMap<>();
     }
 
+    /**
+     * Constructor of Distance-Vector
+     */
     public DistanceVector(DistanceVector other){
         this.source = other.source;
         this.valuesMap = new HashMap<>(other.valuesMap);
     }
 
+    /**
+     * Get the source from the Distance-Vector
+     * @Return source
+     */
     public SocketAddress getSource(){
         return source;
     }
 
+    /**
+     * Store corresponding value into maps
+     * @param address, value
+     */
     public void addValue(SocketAddress address, Integer value){
         this.valuesMap.put(address, value);
     }
 
+    /**
+     * Get value from the maps
+     * @param address
+     * @Return value
+     */
     public Integer getValue(SocketAddress address){
         return this.valuesMap.getOrDefault(address, 16);
     }
 
+    /**
+     * Apply Poison Reverse
+     * @param destination, path map
+     */
     public void applyPoison(SocketAddress destination, HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap){
         if(pathMap.isEmpty()){
             return;
@@ -48,6 +74,9 @@ public class DistanceVector {
         }
     }
 
+    /**
+     * Get nodes from the map
+     */
     public Set<SocketAddress> getNodes(){
         return this.valuesMap.keySet();
     }
