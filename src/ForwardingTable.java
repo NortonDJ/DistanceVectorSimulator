@@ -3,16 +3,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by nortondj on 4/26/17.
+ * Simulation of fowarding tables 
  */
 public class ForwardingTable {
     // a -> b, where a is the desired address, b is the node to send to
     private HashMap<SocketAddress, SocketAddress> table;
 
+    /**
+     * Constructor of fowarding table
+     */
     public ForwardingTable(){
         this.table = new HashMap<>();
     }
 
+    /**
+     * get next socket address
+     * @param destination
+     */
     public SocketAddress getNext(SocketAddress destination){
         return table.getOrDefault(destination, null);
     }
@@ -42,6 +49,10 @@ public class ForwardingTable {
         }
     }
 
+    /**
+     * Delete a path in the table
+     * @param node
+     */
     public void remove(SocketAddress node){
         this.table.remove(node);
     }
