@@ -3,7 +3,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Simulation of fowarding tables 
+ * Fowarding tables represents the Router’s forwarding table. 
+ * The ForwardingTable class is what you might expect the DistanceVectorCalculation to hold, 
+ * that is, a mapping between SocketAddress to SocketAddress as the next hop. 
+ * Having this data structure allows the Router to easily handle messaging traffic, 
+ * where if the traffic is not destined for itself, it can look for the next hop.
+ * 
+ * @Author Yizhong Chen, Darren Norton
+ * @version May.6th.2017
  */
 public class ForwardingTable {
     // a -> b, where a is the desired address, b is the node to send to

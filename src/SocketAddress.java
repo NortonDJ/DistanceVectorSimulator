@@ -1,7 +1,13 @@
 import java.net.Socket;
 
 /**
- * Created by nortondj on 4/27/17.
+ * Simulation of Socket address.
+ * A SocketAddress is simple, in that it contains an IP address and a Port, 
+ * which designate the location and port of another router running our program. 
+ * The known values for SocketAddresses are provided in text files which are passed in upon program startup.
+ * 
+ * @Author Yizhong Chen, Darren Norton
+ * @version May.6th.2017
  */
 public class SocketAddress implements Comparable<SocketAddress> {
     private String ip;

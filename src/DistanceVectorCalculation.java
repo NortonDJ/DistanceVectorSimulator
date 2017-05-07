@@ -2,7 +2,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by nortondj on 4/27/17.
+ * DistanceVectorCalculation contains both the DistanceVector, and a HashMap mapping SocketAddresses to ArrayList of 
+ * paths. The HashMap can be imagined as the path from the current node to each destination node. 
+ * We could have just kept the next hop in the path, reducing the ArrayList to a SocketAddress, 
+ * but having an ArrayList allows for a deeper print-out if necessary for debugging.
+ * 
+ * @Author Yizhong Chen, Darren Norton
+ * @version May.6th.2017
  */
 public class DistanceVectorCalculation {
 

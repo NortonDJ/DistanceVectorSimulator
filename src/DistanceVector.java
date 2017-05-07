@@ -5,6 +5,9 @@ import java.util.Set;
 
 /**
  * Simulatior of Distance-vector routing algorithm
+ * We represent Distance Vectors as HashMaps mapping SocketAddresses to costs. 
+ * Each Distance Vector also contains the SocketAddress of the node it originated from. 
+ * The DistanceVector class is meant to be concise and serializable as it is supposed to be sent over the network via UDP.
  * 
  * @Author Yizhong Chen, Darren Norton
  * @version May.6th.2017

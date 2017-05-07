@@ -9,7 +9,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Simulation of Router of network layer on the internet
+ * Router is the most crucial component in this algorithm and is complex as such. 
+ * There are quite a few key additions. First there is the HashMap mapping neighbors’ SocketAddresses to weights. 
+ * This would represent the physical connections to a Router’s neighbors. 
+ * There is a HashMap mapping SocketAddresses to the DistanceVectors the router has received from them. 
+ * There is a list of known nodes, and finally a HashMap to help keep count of the recent communications 
+ * from its neighbors to help drop neighbors after 3 time intervals.
  * 
  * @Author Yizhong Chen, Darren Norton
  * @version May.6th.2017

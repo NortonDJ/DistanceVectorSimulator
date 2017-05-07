@@ -3,7 +3,10 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 /**
- * Simulator of Router UDP Receiver
+ * In general, we support three message types: Messages, New Weight Assignments, Distance Vector Update
+ * 
+ * @Author Yizhong Chen, Darren Norton
+ * @version May.6th.2017
  */
 public class RouterUDPReceiver implements Runnable {
 
