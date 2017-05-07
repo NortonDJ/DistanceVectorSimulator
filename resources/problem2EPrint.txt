@@ -1,16 +1,16 @@
 Hello, type !help for supported commands.
 
-Update sent to all neighbors at time 14:13:31
+Update sent to all neighbors at time 01:49:01
 127.0.0.1:9877 10
 127.0.0.1:9881 2
 127.0.0.1:9879 4
-Time spent DVU with between lock and unlock: 39
-New dv received from 127.0.0.1:9879 with the following distances: 
+Time spent DVU with between lock and unlock: 37
+New dv received from 127.0.0.1:9879 with the following distances:
 127.0.0.1:9878 1
 127.0.0.1:9877 5
 127.0.0.1:9876 3
-127.0.0.1:9881 16
-127.0.0.1:9880 16
+127.0.0.1:9881 6
+127.0.0.1:9880 4
 127.0.0.1:9879 0
 new dv calculated:
 127.0.0.1:9878 5 127.0.0.1:9879
@@ -21,10 +21,10 @@ new dv calculated:
 127.0.0.1:9879 4 127.0.0.1:9879
 New weight to neighbor 127.0.0.1:9881 of 2
 
-New dv received from 127.0.0.1:9881 with the following distances: 
+New dv received from 127.0.0.1:9881 with the following distances:
 127.0.0.1:9877 4
 127.0.0.1:9881 0
-127.0.0.1:9880 16
+127.0.0.1:9880 2
 new dv calculated:
 127.0.0.1:9878 5 127.0.0.1:9879
 127.0.0.1:9877 6 127.0.0.1:9881
@@ -32,29 +32,29 @@ new dv calculated:
 127.0.0.1:9881 2 127.0.0.1:9881
 127.0.0.1:9880 0 ~
 127.0.0.1:9879 4 127.0.0.1:9879
-New dv received from 127.0.0.1:9877 with the following distances: 
+New dv received from 127.0.0.1:9877 with the following distances:
 127.0.0.1:9878 4
 127.0.0.1:9877 0
 127.0.0.1:9876 2
 127.0.0.1:9881 4
-127.0.0.1:9880 16
+127.0.0.1:9880 6
 127.0.0.1:9879 5
-New dv received from 127.0.0.1:9881 with the following distances: 
-127.0.0.1:9878 8
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 7
+127.0.0.1:9877 4
+127.0.0.1:9876 9
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+127.0.0.1:9879 6
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 7
 127.0.0.1:9877 4
 127.0.0.1:9876 6
 127.0.0.1:9881 0
-127.0.0.1:9880 16
-127.0.0.1:9879 9
-New dv received from 127.0.0.1:9881 with the following distances: 
-127.0.0.1:9878 16
-127.0.0.1:9877 4
-127.0.0.1:9876 6
-127.0.0.1:9881 0
-127.0.0.1:9880 16
-127.0.0.1:9879 16
+127.0.0.1:9880 2
+127.0.0.1:9879 6
 PRINT
-Current distance vector: 
+Current distance vector:
 SOURCE: 127.0.0.1:9880
 127.0.0.1:9878 | 5
 127.0.0.1:9877 | 6
@@ -68,219 +68,399 @@ SOURCE: 127.0.0.1:9877
 127.0.0.1:9877 | 0
 127.0.0.1:9876 | 2
 127.0.0.1:9881 | 4
-127.0.0.1:9880 | 16
+127.0.0.1:9880 | 6
 127.0.0.1:9879 | 5
 Distance vector from : 127.0.0.1:9881
 SOURCE: 127.0.0.1:9881
-127.0.0.1:9878 | 16
+127.0.0.1:9878 | 7
 127.0.0.1:9877 | 4
 127.0.0.1:9876 | 6
 127.0.0.1:9881 | 0
-127.0.0.1:9880 | 16
-127.0.0.1:9879 | 16
+127.0.0.1:9880 | 2
+127.0.0.1:9879 | 6
 Distance vector from : 127.0.0.1:9879
 SOURCE: 127.0.0.1:9879
 127.0.0.1:9878 | 1
 127.0.0.1:9877 | 5
 127.0.0.1:9876 | 3
-127.0.0.1:9881 | 16
-127.0.0.1:9880 | 16
+127.0.0.1:9881 | 6
+127.0.0.1:9880 | 4
 127.0.0.1:9879 | 0
-
-// REMOVE D
-
-PRINT
-Current distance vector: 
-SOURCE: 127.0.0.1:9880
-127.0.0.1:9878 | 5
-127.0.0.1:9877 | 6
-127.0.0.1:9876 | 7
-127.0.0.1:9881 | 2
-127.0.0.1:9880 | 0
-127.0.0.1:9879 | 4
-Distance vector from : 127.0.0.1:9877
-SOURCE: 127.0.0.1:9877
-127.0.0.1:9878 | 4
-127.0.0.1:9877 | 0
-127.0.0.1:9876 | 2
-127.0.0.1:9881 | 4
-127.0.0.1:9880 | 16
-127.0.0.1:9879 | 5
-Distance vector from : 127.0.0.1:9881
-SOURCE: 127.0.0.1:9881
-127.0.0.1:9878 | 16
-127.0.0.1:9877 | 4
-127.0.0.1:9876 | 6
-127.0.0.1:9881 | 0
-127.0.0.1:9880 | 16
-127.0.0.1:9879 | 16
-Distance vector from : 127.0.0.1:9879
-SOURCE: 127.0.0.1:9879
-127.0.0.1:9878 | 1
-127.0.0.1:9877 | 5
-127.0.0.1:9876 | 3
-127.0.0.1:9881 | 16
-127.0.0.1:9880 | 16
-127.0.0.1:9879 | 0
-
-//
-
-New dv received from 127.0.0.1:9881 with the following distances: 
-127.0.0.1:9878 8
-127.0.0.1:9877 4
-127.0.0.1:9876 6
-127.0.0.1:9881 0
-127.0.0.1:9880 16
-127.0.0.1:9879 13
-new dv calculated:
-127.0.0.1:9878 10 127.0.0.1:9881
-127.0.0.1:9877 6 127.0.0.1:9881
-127.0.0.1:9876 8 127.0.0.1:9881
-127.0.0.1:9881 2 127.0.0.1:9881
-127.0.0.1:9880 0 ~
-127.0.0.1:9879 15 127.0.0.1:9877
-New dv received from 127.0.0.1:9877 with the following distances: 
+Time spent DVC with between lock and unlock: 1
+New dv received from 127.0.0.1:9877 with the following distances:
 127.0.0.1:9878 4
 127.0.0.1:9877 0
 127.0.0.1:9876 2
 127.0.0.1:9881 4
-127.0.0.1:9880 16
-127.0.0.1:9879 9
-New dv received from 127.0.0.1:9881 with the following distances: 
-127.0.0.1:9878 8
-127.0.0.1:9877 4
-127.0.0.1:9876 6
-127.0.0.1:9881 0
-127.0.0.1:9880 16
-127.0.0.1:9879 9
-new dv calculated:
-127.0.0.1:9878 10 127.0.0.1:9881
-127.0.0.1:9877 6 127.0.0.1:9881
-127.0.0.1:9876 8 127.0.0.1:9881
-127.0.0.1:9881 2 127.0.0.1:9881
-127.0.0.1:9880 0 ~
-127.0.0.1:9879 11 127.0.0.1:9881
-New dv received from 127.0.0.1:9877 with the following distances: 
-127.0.0.1:9878 4
-127.0.0.1:9877 0
-127.0.0.1:9876 2
-127.0.0.1:9881 4
-127.0.0.1:9880 16
+127.0.0.1:9880 6
 127.0.0.1:9879 5
-New dv received from 127.0.0.1:9877 with the following distances: 
+Update sent to all neighbors at time 01:49:31
+127.0.0.1:9877 6
+127.0.0.1:9881 2
+127.0.0.1:9879 4
+Time spent DVU with between lock and unlock: 2
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 7
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+127.0.0.1:9879 6
+New dv received from 127.0.0.1:9877 with the following distances:
 127.0.0.1:9878 4
 127.0.0.1:9877 0
 127.0.0.1:9876 2
 127.0.0.1:9881 4
-127.0.0.1:9880 16
+127.0.0.1:9880 6
 127.0.0.1:9879 5
-New dv received from 127.0.0.1:9877 with the following distances: 
-127.0.0.1:9878 4
-127.0.0.1:9877 0
-127.0.0.1:9876 2
-127.0.0.1:9881 4
-127.0.0.1:9880 16
-New dv received from 127.0.0.1:9881 with the following distances: 
-127.0.0.1:9878 8
-127.0.0.1:9877 4
-127.0.0.1:9876 6
-127.0.0.1:9881 0
-127.0.0.1:9880 16
-new dv calculated:
-127.0.0.1:9878 10 127.0.0.1:9881
-127.0.0.1:9877 6 127.0.0.1:9881
-127.0.0.1:9876 8 127.0.0.1:9881
-127.0.0.1:9881 2 127.0.0.1:9881
-127.0.0.1:9880 0 ~
-Update sent to all neighbors at time 14:17:01
+Update sent to all neighbors at time 01:50:01
 127.0.0.1:9877 6
 127.0.0.1:9881 2
-Time spent DVU with between lock and unlock: 4
-New dv received from 127.0.0.1:9881 with the following distances: 
-127.0.0.1:9878 8
-127.0.0.1:9877 4
-127.0.0.1:9876 6
-127.0.0.1:9881 0
-127.0.0.1:9880 16
-New dv received from 127.0.0.1:9877 with the following distances: 
-127.0.0.1:9878 4
-127.0.0.1:9877 0
-127.0.0.1:9876 2
-127.0.0.1:9881 4
-127.0.0.1:9880 16
-Update sent to all neighbors at time 14:17:31
-127.0.0.1:9877 6
-127.0.0.1:9881 2
-Time spent DVU with between lock and unlock: 4
-New dv received from 127.0.0.1:9881 with the following distances: 
-127.0.0.1:9878 8
-127.0.0.1:9877 4
-127.0.0.1:9876 6
-127.0.0.1:9881 0
-127.0.0.1:9880 16
-New dv received from 127.0.0.1:9877 with the following distances: 
-127.0.0.1:9878 4
-127.0.0.1:9877 0
-127.0.0.1:9876 2
-127.0.0.1:9881 4
-127.0.0.1:9880 16
-Update sent to all neighbors at time 14:18:01
-127.0.0.1:9877 6
-127.0.0.1:9881 2
-Time spent DVU with between lock and unlock: 8
-New dv received from 127.0.0.1:9881 with the following distances: 
-127.0.0.1:9878 8
-127.0.0.1:9877 4
-127.0.0.1:9876 6
-127.0.0.1:9881 0
-127.0.0.1:9880 16
-New dv received from 127.0.0.1:9877 with the following distances: 
-127.0.0.1:9878 4
-127.0.0.1:9877 0
-127.0.0.1:9876 2
-127.0.0.1:9881 4
-127.0.0.1:9880 16
-Update sent to all neighbors at time 14:18:31
-127.0.0.1:9877 6
-127.0.0.1:9881 2
-Time spent DVU with between lock and unlock: 10
-New dv received from 127.0.0.1:9881 with the following distances: 
-127.0.0.1:9878 8
-127.0.0.1:9877 4
-127.0.0.1:9876 6
-127.0.0.1:9881 0
-127.0.0.1:9880 16
-New dv received from 127.0.0.1:9877 with the following distances: 
-127.0.0.1:9878 4
-127.0.0.1:9877 0
-127.0.0.1:9876 2
-127.0.0.1:9881 4
-127.0.0.1:9880 16
-Update sent to all neighbors at time 14:19:01
-127.0.0.1:9877 6
-127.0.0.1:9881 2
+127.0.0.1:9879 4
 Time spent DVU with between lock and unlock: 3
-New dv received from 127.0.0.1:9881 with the following distances: 
-127.0.0.1:9878 8
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 7
 127.0.0.1:9877 4
 127.0.0.1:9876 6
 127.0.0.1:9881 0
-127.0.0.1:9880 16
-New dv received from 127.0.0.1:9877 with the following distances: 
+127.0.0.1:9880 2
+127.0.0.1:9879 6
+New dv received from 127.0.0.1:9877 with the following distances:
 127.0.0.1:9878 4
 127.0.0.1:9877 0
 127.0.0.1:9876 2
 127.0.0.1:9881 4
-127.0.0.1:9880 16
-Update sent to all neighbors at time 14:19:31
+127.0.0.1:9880 6
+127.0.0.1:9879 5
+Update sent to all neighbors at time 01:50:31
 127.0.0.1:9877 6
 127.0.0.1:9881 2
+127.0.0.1:9879 4
+Time spent DVU with between lock and unlock: 13
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 7
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+127.0.0.1:9879 6
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 9
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 5
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 5
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 9
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 10
+Update sent to all neighbors at time 01:51:01
+127.0.0.1:9877 6
+127.0.0.1:9881 2
+127.0.0.1:9879 4
+neighbor 127.0.0.1:9879 dropped
+new dv calculated:
+127.0.0.1:9878 9 127.0.0.1:9881
+127.0.0.1:9877 6 127.0.0.1:9881
+127.0.0.1:9876 8 127.0.0.1:9881
+127.0.0.1:9881 2 127.0.0.1:9881
+127.0.0.1:9880 0 ~
+Time spent DVU with between lock and unlock: 9
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 8
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+127.0.0.1:9879 14
+new dv calculated:
+127.0.0.1:9878 10 127.0.0.1:9881
+127.0.0.1:9877 6 127.0.0.1:9881
+127.0.0.1:9876 8 127.0.0.1:9881
+127.0.0.1:9881 2 127.0.0.1:9881
+127.0.0.1:9880 0 ~
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 14
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 8
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 8
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+Hello, type !help for supported commands.
 
+Update sent to all neighbors at time 01:49:01
+127.0.0.1:9877 10
+127.0.0.1:9881 2
+127.0.0.1:9879 4
+Time spent DVU with between lock and unlock: 37
+New dv received from 127.0.0.1:9879 with the following distances:
+127.0.0.1:9878 1
+127.0.0.1:9877 5
+127.0.0.1:9876 3
+127.0.0.1:9881 6
+127.0.0.1:9880 4
+127.0.0.1:9879 0
+new dv calculated:
+127.0.0.1:9878 5 127.0.0.1:9879
+127.0.0.1:9877 9 127.0.0.1:9879
+127.0.0.1:9876 7 127.0.0.1:9879
+127.0.0.1:9881 2 127.0.0.1:9881
+127.0.0.1:9880 0 ~
+127.0.0.1:9879 4 127.0.0.1:9879
+New weight to neighbor 127.0.0.1:9881 of 2
 
-// After convergence
-
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9877 4
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+new dv calculated:
+127.0.0.1:9878 5 127.0.0.1:9879
+127.0.0.1:9877 6 127.0.0.1:9881
+127.0.0.1:9876 7 127.0.0.1:9879
+127.0.0.1:9881 2 127.0.0.1:9881
+127.0.0.1:9880 0 ~
+127.0.0.1:9879 4 127.0.0.1:9879
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 5
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 7
+127.0.0.1:9877 4
+127.0.0.1:9876 9
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+127.0.0.1:9879 6
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 7
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+127.0.0.1:9879 6
 PRINT
-Current distance vector: 
+Current distance vector:
+SOURCE: 127.0.0.1:9880
+127.0.0.1:9878 | 5
+127.0.0.1:9877 | 6
+127.0.0.1:9876 | 7
+127.0.0.1:9881 | 2
+127.0.0.1:9880 | 0
+127.0.0.1:9879 | 4
+Distance vector from : 127.0.0.1:9877
+SOURCE: 127.0.0.1:9877
+127.0.0.1:9878 | 4
+127.0.0.1:9877 | 0
+127.0.0.1:9876 | 2
+127.0.0.1:9881 | 4
+127.0.0.1:9880 | 6
+127.0.0.1:9879 | 5
+Distance vector from : 127.0.0.1:9881
+SOURCE: 127.0.0.1:9881
+127.0.0.1:9878 | 7
+127.0.0.1:9877 | 4
+127.0.0.1:9876 | 6
+127.0.0.1:9881 | 0
+127.0.0.1:9880 | 2
+127.0.0.1:9879 | 6
+Distance vector from : 127.0.0.1:9879
+SOURCE: 127.0.0.1:9879
+127.0.0.1:9878 | 1
+127.0.0.1:9877 | 5
+127.0.0.1:9876 | 3
+127.0.0.1:9881 | 6
+127.0.0.1:9880 | 4
+127.0.0.1:9879 | 0
+Time spent DVC with between lock and unlock: 1
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 5
+Update sent to all neighbors at time 01:49:31
+127.0.0.1:9877 6
+127.0.0.1:9881 2
+127.0.0.1:9879 4
+Time spent DVU with between lock and unlock: 2
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 7
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+127.0.0.1:9879 6
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 5
+Update sent to all neighbors at time 01:50:01
+127.0.0.1:9877 6
+127.0.0.1:9881 2
+127.0.0.1:9879 4
+Time spent DVU with between lock and unlock: 3
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 7
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+127.0.0.1:9879 6
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 5
+Update sent to all neighbors at time 01:50:31
+127.0.0.1:9877 6
+127.0.0.1:9881 2
+127.0.0.1:9879 4
+Time spent DVU with between lock and unlock: 13
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 7
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+127.0.0.1:9879 6
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 9
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 5
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 5
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 9
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 10
+Update sent to all neighbors at time 01:51:01
+127.0.0.1:9877 6
+127.0.0.1:9881 2
+127.0.0.1:9879 4
+neighbor 127.0.0.1:9879 dropped
+new dv calculated:
+127.0.0.1:9878 9 127.0.0.1:9881
+127.0.0.1:9877 6 127.0.0.1:9881
+127.0.0.1:9876 8 127.0.0.1:9881
+127.0.0.1:9881 2 127.0.0.1:9881
+127.0.0.1:9880 0 ~
+Time spent DVU with between lock and unlock: 9
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 8
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+127.0.0.1:9879 14
+new dv calculated:
+127.0.0.1:9878 10 127.0.0.1:9881
+127.0.0.1:9877 6 127.0.0.1:9881
+127.0.0.1:9876 8 127.0.0.1:9881
+127.0.0.1:9881 2 127.0.0.1:9881
+127.0.0.1:9880 0 ~
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+127.0.0.1:9879 14
+New dv received from 127.0.0.1:9877 with the following distances:
+127.0.0.1:9878 4
+127.0.0.1:9877 0
+127.0.0.1:9876 2
+127.0.0.1:9881 4
+127.0.0.1:9880 6
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 8
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+New dv received from 127.0.0.1:9881 with the following distances:
+127.0.0.1:9878 8
+127.0.0.1:9877 4
+127.0.0.1:9876 6
+127.0.0.1:9881 0
+127.0.0.1:9880 2
+Current distance vector:
 SOURCE: 127.0.0.1:9880
 127.0.0.1:9878 | 10
 127.0.0.1:9877 | 6
@@ -293,14 +473,39 @@ SOURCE: 127.0.0.1:9877
 127.0.0.1:9877 | 0
 127.0.0.1:9876 | 2
 127.0.0.1:9881 | 4
-127.0.0.1:9880 | 16
+127.0.0.1:9880 | 6
 Distance vector from : 127.0.0.1:9881
 SOURCE: 127.0.0.1:9881
 127.0.0.1:9878 | 8
 127.0.0.1:9877 | 4
 127.0.0.1:9876 | 6
 127.0.0.1:9881 | 0
-127.0.0.1:9880 | 16
+127.0.0.1:9880 | 2
+Time spent DVC with between lock and unlock: 1
 
+PRINT
+Current distance vector:
+SOURCE: 127.0.0.1:9880
+127.0.0.1:9878 | 10
+127.0.0.1:9877 | 6
+127.0.0.1:9876 | 8
+127.0.0.1:9881 | 2
+127.0.0.1:9880 | 0
+Distance vector from : 127.0.0.1:9877
+SOURCE: 127.0.0.1:9877
+127.0.0.1:9878 | 4
+127.0.0.1:9877 | 0
+127.0.0.1:9876 | 2
+127.0.0.1:9881 | 4
+127.0.0.1:9880 | 6
+Distance vector from : 127.0.0.1:9881
+SOURCE: 127.0.0.1:9881
+127.0.0.1:9878 | 8
+127.0.0.1:9877 | 4
+127.0.0.1:9876 | 6
+127.0.0.1:9881 | 0
+127.0.0.1:9880 | 2
+Time spent DVC with between lock and unlock: 3
 
-
+MSG 127.0.0.1 9876
+RECEIVED MESSAGE FINALLY: | 127.0.0.1:9880 | 127.0.0.1:9881 | 127.0.0.1:9877
