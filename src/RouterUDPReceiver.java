@@ -1,6 +1,7 @@
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * In general, we support three message types: Messages, New Weight Assignments, Distance Vector Update
@@ -52,7 +53,13 @@ public class RouterUDPReceiver implements Runnable {
                     }
                     String message = new String(decoded);
                     // received a distance vector
-                    r.receiveDistanceVector(DistanceVectorFactory.makeDistanceVector(message));
+                    ReentrantLock lock = r.getLock();
+                    lock.lock();
+                    try {
+                        r.receiveDistanceVector(DistanceVectorFactory.makeDistanceVector(message));
+                    } finally {
+                        lock.unlock();
+                    }
                     break;
                 }
                 case (1): {
@@ -66,7 +73,13 @@ public class RouterUDPReceiver implements Runnable {
                     int port = Integer.parseInt(words[1]);
                     int weight = Integer.parseInt(words[2].trim());
                     SocketAddress neighbor = new SocketAddress(ip, port);
-                    r.receiveWeight(neighbor, weight);
+                    ReentrantLock lock = r.getLock();
+                    lock.lock();
+                    try {
+                        r.receiveWeight(neighbor, weight);
+                    } finally {
+                        lock.unlock();
+                    }
                     break;
                 }
                 case (2): {
@@ -103,7 +116,13 @@ public class RouterUDPReceiver implements Runnable {
                     String fromIp = address.getHostAddress();
                     int port = packet.getPort();
                     SocketAddress fromAddress = new SocketAddress(fromIp, port);
-                    r.receiveMessage(message, fromAddress, destAddress);
+                    ReentrantLock lock = r.getLock();
+                    lock.lock();
+                    try {
+                        r.receiveMessage(message, fromAddress, destAddress);
+                    } finally {
+                        lock.unlock();
+                    }
                     break;
                 }
                 default: {
