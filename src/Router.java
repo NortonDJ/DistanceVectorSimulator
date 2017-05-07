@@ -88,6 +88,9 @@ public class Router {
         }
     }
 
+    /**
+     * Counting for the incrementing time
+     */
     public void incrementTimerCounts() {
         boolean dropped = false;
         ArrayList<SocketAddress> removed = new ArrayList<>();
@@ -109,6 +112,10 @@ public class Router {
         }
     }
 
+    /**
+     * Delete Neighbor router from the router table
+     * @param neighbor address
+     */
     public void dropNeighbor(SocketAddress neighbor) {
         System.out.println("neighbor " + neighbor + " dropped");
         this.neighborsMap.remove(neighbor);
@@ -117,6 +124,10 @@ public class Router {
         this.table.remove(neighbor);
     }
 
+    /**
+     * Constructor of Router
+     * @return address, address map, poison
+     */
     public Router(SocketAddress address, HashMap<SocketAddress, Integer> neighborsMap, boolean poison) {
         this.lock = new ReentrantLock();
         this.address = address;
@@ -141,24 +152,36 @@ public class Router {
         broadCastWeights();
     }
 
+    /**
+     * Deliver weight to neighbors
+     */
     public void broadCastWeights(){
         for(SocketAddress neighbor : neighborsMap.keySet()){
             sendWeightChange(neighborsMap.get(neighbor), neighbor);
         }
     }
-
+    
+    /**
+     * Move time counting to neighbors 
+     */
     private void addNeighborsToTimerCounts() {
         for (SocketAddress neighbor : neighborsMap.keySet()) {
             this.timerCounts.put(neighbor, 0);
         }
     }
 
+    /**
+     * Add neaby router to its map
+     */
     private void addNeighborsToDistVectMap() {
         for (SocketAddress neighbor : neighborsMap.keySet()) {
             this.vectorMap.put(neighbor, null);
         }
     }
 
+    /**
+     * Add neaby neighbors to nodes
+     */
     private void addNeighborsToKnownNodes() {
         for (SocketAddress neighbor : neighborsMap.keySet()) {
             this.knownNodes.add(neighbor);
