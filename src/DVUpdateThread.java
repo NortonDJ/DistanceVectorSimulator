@@ -18,15 +18,12 @@ public class DVUpdateThread implements Runnable{
     }
 
     public void run(){
-        long timeStart = System.currentTimeMillis();
         ReentrantLock lock = r.getLock();
         lock.lock();
         try {
             r.broadCastTimeout();
             r.incrementTimerCounts();
         } finally {
-            long timeStop = System.currentTimeMillis();
-            System.out.println("Time spent DVU with between lock and unlock: " + (timeStop-timeStart));
             lock.unlock();
         }
     }

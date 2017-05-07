@@ -42,14 +42,11 @@ public class DVCommandThread implements Runnable {
                             break;
                         }
                         case ("PRINT"): {
-                            long timeStart = System.currentTimeMillis();
                             ReentrantLock lock = r.getLock();
                             lock.lock();
                             try {
                                 r.print();
                             } finally {
-                                long timeStop = System.currentTimeMillis();
-                                System.out.println("Time spent DVC with between lock and unlock: " + (timeStop-timeStart));
                                 lock.unlock();
                             }
                             break;
@@ -65,14 +62,11 @@ public class DVCommandThread implements Runnable {
                                 message += " " + lineScanner.next();
                             }
                             SocketAddress address = new SocketAddress(destIp, Integer.parseInt(destPort));
-                            long timeStart = System.currentTimeMillis();
                             ReentrantLock lock = r.getLock();
                             lock.lock();
                             try {
                                 r.message(message, address);
                             } finally {
-                                long timeStop = System.currentTimeMillis();
-                                System.out.println("Time spent DVC with between lock and unlock: " + (timeStop-timeStart));
                                 lock.unlock();
                             }
                             break;
@@ -82,14 +76,11 @@ public class DVCommandThread implements Runnable {
                             String destPort = lineScanner.next();
                             String weight = lineScanner.next();
                             SocketAddress address = new SocketAddress(destIp, Integer.parseInt(destPort));
-                            long timeStart = System.currentTimeMillis();
                             ReentrantLock lock = r.getLock();
                             lock.lock();
                             try {
                                 r.changeWeight(address, Integer.parseInt(weight));
                             } finally {
-                                long timeStop = System.currentTimeMillis();
-                                System.out.println("Time spent DVC with between lock and unlock: " + (timeStop-timeStart));
                                 lock.unlock();
                             }
                             break;
