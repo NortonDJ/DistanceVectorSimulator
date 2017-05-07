@@ -123,7 +123,7 @@ public class Router {
      * @param neighbor address
      */
     public void dropNeighbor(SocketAddress neighbor) {
-        System.out.println("neighbor " + neighbor + " dropped");
+        System.out.println("Neighbor " + neighbor + " dropped\n");
         this.neighborsMap.remove(neighbor);
         this.vectorMap.remove(neighbor);
         this.knownNodes.remove(neighbor);
@@ -205,7 +205,7 @@ public class Router {
      */
     public boolean receiveDistanceVector(DistanceVector vector) {
         System.out.println("New dv received from " + vector.getSource() +
-                " with the following " + vector.distancesString());
+                " with the following " + vector.distancesString() + "\n");
         SocketAddress source = vector.getSource();
         this.vectorMap.put(source, vector);
         this.timerCounts.put(source, 0);
@@ -223,14 +223,14 @@ public class Router {
         boolean change;
         // if a change has occurred
         if (!mostRecentCalculation.equals(oldCalculation)) {
-            String s = "new dv calculated:";
+            String s = "New dv calculated:";
             updateForwardingTable(mostRecentCalculation);
             for (SocketAddress node : pathMap.keySet()) {
                 SocketAddress nextHop = table.getNext(node);
                 String pathString = nextHop == null ? "~" : nextHop.toString();
                 s += "\n" + node + " " + vector.getValue(node) + " " + pathString;
             }
-            System.out.println(s);
+            System.out.println(s + "\n");
             broadCastDistanceVector(mostRecentCalculation);
             change = true;
         } else {
@@ -333,11 +333,12 @@ public class Router {
             System.out.println(neighbor + " " +calculation.getResultVector().getValue(neighbor));
             sendDistanceVector(neighbor, toSend);
         }
+        System.out.println();
     }
 
     public void receiveMessage(String message, SocketAddress from, SocketAddress destination) {
         if (destination.equals(address)) {
-            System.out.println("RECEIVED MESSAGE FINALLY: " + message);
+            System.out.println("RECEIVED MESSAGE FINALLY: " + message + "\n");
         } else {
             forward(message, from, destination);
         }
@@ -353,7 +354,7 @@ public class Router {
                     " from " + from +
                     " to " + destination +
                     " forwarded to " + via);
-            System.out.println("msg(" + newMessage + ")");
+            System.out.println("msg(" + newMessage + ")\n");
             sender.udpSend(newMessage, via, destination);
         }
     }
