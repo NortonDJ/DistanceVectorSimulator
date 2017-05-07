@@ -3,18 +3,24 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 /**
- * Created by nortondj on 4/30/17.
+ * Simulator of Router UDP Receiver
  */
 public class RouterUDPReceiver implements Runnable {
 
     private DatagramSocket socket;
     private Router r;
 
+    /**
+     * Constructor of Router UDP Receiver
+     */
     public RouterUDPReceiver(DatagramSocket socket, Router r) {
         this.socket = socket;
         this.r = r;
     }
 
+    /**
+     * Run Router UDP Receiver
+     */
     public void run() {
         try {
             while (true) {
