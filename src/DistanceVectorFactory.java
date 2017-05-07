@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 /**
- * Created by nortondj on 4/30/17.
+ * Create Distance-Vector Routing algorithm
  */
 public class DistanceVectorFactory {
 
@@ -14,6 +14,9 @@ public class DistanceVectorFactory {
                 "127.0.0.1:9879 | 1"));
     }
 
+    /**
+     * Create Distance-Vector Routing algorithm accordint to input file
+     */
     public static DistanceVector makeDistanceVector(String reconcile) {
         try {
             /*
