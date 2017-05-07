@@ -1,6 +1,4 @@
-import java.lang.reflect.Array;
 import java.net.DatagramSocket;
-import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -182,16 +179,16 @@ public class Router {
         boolean change;
         // if a change has occurred
         if (!mostRecentCalculation.equals(oldCalculation)) {
-            updateForwardingTable(mostRecentCalculation);
-            broadCastDistanceVector(mostRecentCalculation);
-            change = true;
             String s = "new dv calculated:";
+            updateForwardingTable(mostRecentCalculation);
             for (SocketAddress node : pathMap.keySet()) {
                 SocketAddress nextHop = table.getNext(node);
                 String pathString = nextHop == null ? "~" : nextHop.toString();
                 s += "\n" + node + " " + vector.getValue(node) + " " + pathString;
             }
             System.out.println(s);
+            broadCastDistanceVector(mostRecentCalculation);
+            change = true;
         } else {
             change = false;
         }
@@ -318,22 +315,22 @@ public class Router {
     }
 
     public Integer findDistance(SocketAddress node, SocketAddress destination, DistanceVector nodeDistanceVector) {
-        // if the neighbor has not sent a distance vector,
-        //     we check if the neighbor and destination are the same
-        //         if same, then dneighbor->dest = dneighbor->neighbor = 0;
-        //         otherwise dneighbor->dest = inf, because router doesn't have path
+        // if the node has not sent a distance vector,
+        //     we check if the node and destination are the same
+        //         if same, then dnode->dest = dnode->node = 0;
+        //         otherwise dnode->dest = inf, because router doesn't have path
         Integer distanceNodeToDest;
         if (nodeDistanceVector == null) {
             if (node.equals(destination)) {
-                // destination and neighbor are the same
+                // destination and node are the same
                 distanceNodeToDest = 0;
             } else {
-                // destination and neighbor are different and
+                // destination and node are different and
                 // no direct path from neighbor->dest
                 distanceNodeToDest = 16;
             }
         } else {
-            // we know dneighbor->dest
+            // we know node->dest
             if (node.equals(destination)) {
                 distanceNodeToDest = 0;
             } else {
