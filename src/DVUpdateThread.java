@@ -9,9 +9,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * @version May.6th.2017
  */
 public class DVUpdateThread implements Runnable{
-
     private Router r;
-
+    /**
+     * Constructor of DVUpdateThread
+     */
     public DVUpdateThread(Router r){
         this.r = r;
     }

@@ -13,6 +13,9 @@ public class SocketAddress implements Comparable<SocketAddress> {
     private String ip;
     private Integer port;
 
+    /**
+     * Constructor of Socket Address
+     */
     public SocketAddress(String ip, Integer port){
         this.ip = ip;
         this.port = port;

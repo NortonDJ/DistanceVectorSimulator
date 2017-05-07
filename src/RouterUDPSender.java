@@ -5,11 +5,14 @@ import java.net.*;
 import java.util.ArrayList;
 
 /**
- * Created by nortondj on 4/30/17.
+ * 
  */
 public class RouterUDPSender {
     private DatagramSocket socket;
 
+    /**
+     * Constructor of RouterUDPSender
+     */
     public RouterUDPSender(DatagramSocket socket) {
         this.socket = socket;
     }

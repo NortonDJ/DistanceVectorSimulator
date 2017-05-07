@@ -72,8 +72,9 @@ public class Router {
     }
 
     /**
-     * Get lock of this router
-     * @return lock
+     * Send message to certain destination
+     * @param message, destination
+     * @return SocketAddress
      */
     public SocketAddress message(String message, SocketAddress destination) {
         SocketAddress via = table.getNext(destination);

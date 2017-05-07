@@ -25,7 +25,7 @@ public class DistanceVector {
     }
 
     /**
-     * Constructor of Distance-Vector
+     * Alternative Constructor of Distance-Vector
      */
     public DistanceVector(DistanceVector other){
         this.source = other.source;
@@ -99,6 +99,10 @@ public class DistanceVector {
         }
     }
 
+    /**
+     * Form source to structured String
+     * @return revised source
+     */
     public String toString(){
         String result = "";
         result += "SOURCE: " + source;
@@ -108,6 +112,10 @@ public class DistanceVector {
         return result;
     }
 
+    /**
+     * Form source to alternative structured String
+     * @return revised source
+     */
     public String distancesString(){
         String result ="distances: ";
         for(SocketAddress s : valuesMap.keySet()){

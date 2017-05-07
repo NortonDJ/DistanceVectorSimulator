@@ -2,6 +2,9 @@ import java.util.Scanner;
 
 /**
  * Create Distance-Vector Routing algorithm
+ * 
+ * @Author Yizhong Chen, Darren Norton
+ * @version May.6th.2017
  */
 public class DistanceVectorFactory {
 

@@ -37,6 +37,9 @@ public class RouterUDPReceiver implements Runnable {
         }
     }
 
+    /**
+     * Decode the packet to distance vectors
+     */
     public void decode(DatagramPacket packet) {
         byte[] bytes = packet.getData();
         try {
