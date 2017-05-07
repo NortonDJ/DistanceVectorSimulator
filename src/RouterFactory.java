@@ -4,10 +4,17 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- * Created by nortondj on 4/27/17.
+ * Create Routers according to Input file
+ * 
+ * @Author Yizhong Chen, Darren Norton
+ * @version May.6th.2017
  */
 public class RouterFactory {
-
+    /**
+     * Create Router according to Input file
+     * @param filename, boolean poison
+     * @return new Router
+     */
     public static Router makeRouter(String filename, boolean poison){
         Scanner in = null;
         try {

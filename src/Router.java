@@ -9,7 +9,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by nortondj on 4/26/17.
+ * Simulation of Router of network layer on the internet
+ * 
+ * @Author Yizhong Chen, Darren Norton
+ * @version May.6th.2017
  */
 public class Router {
     private ForwardingTable table;
@@ -43,7 +46,11 @@ public class Router {
         }
         r.start(30);
     }
-
+    
+    /**
+     * Execute the threads
+     * @param time between update
+     */
     public void start(int timeBetweenUpdate) {
         ScheduledThreadPoolExecutor threadPool = new ScheduledThreadPoolExecutor(4);
         threadPool.scheduleAtFixedRate(new DVUpdateThread(this), 0, timeBetweenUpdate, TimeUnit.SECONDS);
@@ -51,10 +58,18 @@ public class Router {
         threadPool.execute(new RouterUDPReceiver(socket, this));
     }
 
+    /**
+     * Get lock of this router
+     * @return lock
+     */
     public ReentrantLock getLock(){
         return this.lock;
     }
 
+    /**
+     * Get lock of this router
+     * @return lock
+     */
     public SocketAddress message(String message, SocketAddress destination) {
         SocketAddress via = table.getNext(destination);
         if (via == null) {
