@@ -32,8 +32,44 @@ public class Router {
     private RouterUDPSender sender;
     private ReentrantLock lock;
 
+    /**
+     * Constructor of Router
+     * @return address, address map, poison
+     */
+    public Router(SocketAddress address, HashMap<SocketAddress, Integer> neighborsMap, boolean poison) {
+        this.lock = new ReentrantLock();
+        this.address = address;
+        this.table = new ForwardingTable();
+        this.neighborsMap = neighborsMap;
+        this.vectorMap = new HashMap<>();
+        this.knownNodes = new HashSet<>();
+        this.timerCounts = new HashMap<>();
+        this.poison = poison;
+
+        // initialize the various data structures
+        addNeighborsToDistVectMap();
+        addNeighborsToKnownNodes();
+        addNeighborsToTimerCounts();
+        this.mostRecentCalculation = recalculateDistanceVector();
+        updateForwardingTable(this.mostRecentCalculation);
+
+        // create the socket
+        try {
+            this.socket = new DatagramSocket(address.getPort());
+        } catch (Exception e) {
+            System.out.println("Failed to open socket, exiting.");
+            System.exit(1);
+        }
+
+        this.sender = new RouterUDPSender(socket);
+
+        // broad cast weight changes to all neighbors to make the network map consistent
+        broadCastWeights();
+    }
+
     public static void main(String[] args) {
         Router r;
+
         if (args.length == 0) {
             System.out.println("Please re-run the Router with the following format:");
             System.out.println("java Router [-reverse] <neighbors.txt>");
@@ -49,9 +85,10 @@ public class Router {
                 return;
             }
         }
+
         r.start(30);
     }
-    
+
     /**
      * Execute the threads
      * @param timeBetweenUpdate between update
@@ -95,11 +132,14 @@ public class Router {
     }
 
     /**
-     * Counting for the incrementing time
+     * Counting for the incrementing time, will drop a neighbor after 3 complete
+     * intervals of silence
      */
     public void incrementTimerCounts() {
         boolean dropped = false;
         ArrayList<SocketAddress> removed = new ArrayList<>();
+
+        // update the last seen time
         for (SocketAddress s : timerCounts.keySet()) {
             int count = timerCounts.get(s);
             if (count++ == 3) {
@@ -110,6 +150,8 @@ public class Router {
                 timerCounts.put(s, count);
             }
         }
+
+        // if we found that a neighbor has been dropped, we should stop tracking it
         if(dropped){
             for(SocketAddress s : removed){
                 timerCounts.remove(s);
@@ -128,34 +170,6 @@ public class Router {
         this.vectorMap.remove(neighbor);
         this.knownNodes.remove(neighbor);
         this.table.remove(neighbor);
-    }
-
-    /**
-     * Constructor of Router
-     * @return address, address map, poison
-     */
-    public Router(SocketAddress address, HashMap<SocketAddress, Integer> neighborsMap, boolean poison) {
-        this.lock = new ReentrantLock();
-        this.address = address;
-        this.table = new ForwardingTable();
-        this.neighborsMap = neighborsMap;
-        this.vectorMap = new HashMap<>();
-        this.knownNodes = new HashSet<>();
-        this.timerCounts = new HashMap<>();
-        this.poison = poison;
-        addNeighborsToDistVectMap();
-        addNeighborsToKnownNodes();
-        addNeighborsToTimerCounts();
-        this.mostRecentCalculation = recalculateDistanceVector();
-        updateForwardingTable(this.mostRecentCalculation);
-        try {
-            this.socket = new DatagramSocket(address.getPort());
-        } catch (Exception e) {
-            System.out.println("Failed to open socket, exiting.");
-            System.exit(1);
-        }
-        this.sender = new RouterUDPSender(socket);
-        broadCastWeights();
     }
 
     /**
@@ -215,14 +229,22 @@ public class Router {
         return updateDistanceVector();
     }
 
+    /**
+     * Updates the DistanceVectorCalculation based on the DistanceVectors the router
+     * has received. If the DistanceVector changes, notify the user, and then
+     * broadcast it
+     * @return true if the update caused any field in the distance vector to change
+     */
     public boolean updateDistanceVector() {
         DistanceVectorCalculation oldCalculation = this.mostRecentCalculation;
         this.mostRecentCalculation = recalculateDistanceVector();
         DistanceVector vector = mostRecentCalculation.getResultVector();
         HashMap<SocketAddress, ArrayList<SocketAddress>> pathMap = mostRecentCalculation.getPathMap();
         boolean change;
-        // if a change has occurred
+        // if a change has occurred print a message and broadcast the new vector
         if (!mostRecentCalculation.equals(oldCalculation)) {
+
+            // print the message
             String s = "New dv calculated:";
             updateForwardingTable(mostRecentCalculation);
             for (SocketAddress node : pathMap.keySet()) {
@@ -231,6 +253,8 @@ public class Router {
                 s += "\n" + node + " " + vector.getValue(node) + " " + pathString;
             }
             System.out.println(s + "\n");
+
+            // broadcast the new vector
             broadCastDistanceVector(mostRecentCalculation);
             change = true;
         } else {
@@ -322,6 +346,9 @@ public class Router {
         }
     }
 
+    /**
+     * Broadcast the distance vector to all neighbors as a result of a timeout
+     */
     public void broadCastTimeout(){
         SimpleDateFormat date = new SimpleDateFormat("HH:mm:ss");
         Date current = new Date();
@@ -336,6 +363,13 @@ public class Router {
         System.out.println();
     }
 
+    /**
+     * Receive a message, print that we have received it, and then perform a
+     * forward if necessary according to the RoutingTable
+     * @param message the Application Layer message received
+     * @param from the IP and Port that sent the message
+     * @param destination the intended destination
+     */
     public void receiveMessage(String message, SocketAddress from, SocketAddress destination) {
         if (destination.equals(address)) {
             System.out.println("RECEIVED MESSAGE FINALLY: " + message + "\n");
@@ -344,6 +378,13 @@ public class Router {
         }
     }
 
+    /**
+     * Forward the message to the next hop, or drop it if we have no idea where
+     * to send it, as according to the project description
+     * @param message the Application Layer message received
+     * @param from the IP and Port that sent the message
+     * @param destination the intended destination
+     */
     public void forward(String message, SocketAddress from, SocketAddress destination) {
         SocketAddress via = table.getNext(destination);
         if (via == null) {
